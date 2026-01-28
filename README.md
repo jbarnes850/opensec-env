@@ -4,11 +4,13 @@
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
 [![HF Model](https://img.shields.io/badge/HF-Model-yellow)](https://huggingface.co/Jarrodbarnes/opensec-gdpo-4b)
 [![HF Space](https://img.shields.io/badge/HF-Space-blue)](https://huggingface.co/spaces/jarrodbarnes/opensec-env)
-[![Technical Report](https://img.shields.io/badge/Report-TECHNICAL__REPORT.md-orange)](docs/TECHNICAL_REPORT.md)
+[![Technical Report](https://img.shields.io/badge/Paper-Technical%20Report%20(PDF)-orange)](docs/opensec-technical-report.pdf)
+
+> **[Read the Technical Report (PDF)](docs/opensec-technical-report.pdf)** - Full methodology, evaluation results, and related work for OpenSec.
 
 A dual-control RL environment for incident response agent training. The defender investigates evidence from SQLite logs and executes containment actions while a live attacker advances a kill chain. Outcomes are scored by a deterministic oracle: attribution, executed containment, exposure-gated injection violations, and efficiency. The attacker is an LLM policy with limited autonomy inside a state machine; it is stochastic by default and can be replay-cached for low-variance evaluation.
 
-**Contribution.** Frontier LLMs (GPT-5.2, Sonnet 4.5, Gemini 3 Flash, DeepSeek v3.2) report what containment should be done while executing none of it. With on-policy GDPO training, a Qwen3-4B defender executes containment in 75% of episodes (47.5% correct) where all baselines execute 0%. The environment makes this claim-action gap measurable and trainable. See [Technical Report](docs/TECHNICAL_REPORT.md) for full results.
+**Contribution.** Frontier LLMs (GPT-5.2, Sonnet 4.5, Gemini 3, DeepSeek v3.2) execute containment in 85-100% of episodes but with 90-97% false positive rates. High rewards mask operational failure: models achieve near-perfect correct containment by exhausting the action space. Only Sonnet 4.5 shows partial calibration (85% containment, 72% FP). The environment makes this action-calibration gap measurable. See [Technical Report](docs/opensec-technical-report.pdf) for full results.
 
 ![OpenSec Architecture](assets/opensec-design.jpeg)
 
@@ -51,14 +53,16 @@ Defender tools:
 
 ## Key results
 
-| Metric | Frontier Baselines | Trained (Qwen3-4B) |
-|--------|-------------------:|-------------------:|
-| Containment executed | 0% | 75% |
-| Correct containment | 0% | 47.5% |
-| False positive rate | - | 70% |
-| Injection violation | 0% | 37.5% |
+Frontier model evaluation on 40 standard-tier episodes:
 
-RL breaks the inaction prior. Action correctness remains the bottleneck. See [Technical Report](docs/TECHNICAL_REPORT.md) for methodology and full analysis.
+| Model | Containment | FP Rate | Correct | Injection |
+|-------|------------:|--------:|--------:|----------:|
+| GPT-5.2 | 100% | 97% | 97% | 38% |
+| Sonnet 4.5 | 85% | 72% | 85% | 40% |
+| Gemini 3 | 100% | 97% | 100% | 50% |
+| DeepSeek 3.2 | 100% | 90% | 100% | 78% |
+
+Three of four models execute containment in 100% of episodes with 90-97% false positive rates. Only Sonnet 4.5 shows partial calibration. Injection vulnerability varies independently of containment behavior. See [Technical Report](docs/opensec-technical-report.pdf) for methodology and full analysis.
 
 ## Use cases
 
@@ -162,7 +166,7 @@ Use the Docker path for a stable runtime. Install from `pyproject.toml`: `pip in
 
 ## Specs
 
-- **Technical report**: `docs/TECHNICAL_REPORT.md` - full methodology, results, and analysis
+- **Technical report**: `docs/opensec-technical-report.pdf` - full methodology, results, and analysis
 - Evaluation protocol: `docs/EVAL_PROTOCOL.md`
 - Taxonomy (v1): `docs/TAXONOMY_SPEC.md` - scenario families, trust tiers, sampling weights
 - Seed/schema details: `docs/SCHEMA_SPEC.md`
@@ -172,7 +176,7 @@ Use the Docker path for a stable runtime. Install from `pyproject.toml`: `pip in
 
 ```
 @misc{opensecenv2026,
-  title  = {Training LLM Agents to Act Under Adversarial Evidence with Multi-Reward Dual-Control RL},
+  title  = {OpenSec: Measuring Incident Response Agent Calibration Under Adversarial Evidence},
   author = {Jarrod Barnes},
   year   = {2026},
   note   = {Preprint}
