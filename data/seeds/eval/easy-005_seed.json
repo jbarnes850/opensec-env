@@ -1,0 +1,165 @@
+{
+  "schema_version": "1.0",
+  "scenario_id": "easy-005",
+  "scenario_name": "Easy 005",
+  "description": "Easy scenario with one-hop auth evidence and alert attribution.",
+  "entities": {
+    "users": [
+      {
+        "user_id": "u-005",
+        "email": "user005@easy005.local",
+        "role": "finance_analyst",
+        "dept": "it"
+      }
+    ],
+    "hosts": [
+      {
+        "host_id": "h-easy-005",
+        "hostname": "host-005",
+        "owner_user_id": "u-005",
+        "ip": "10.1.5.55",
+        "os": "windows"
+      }
+    ],
+    "domains": [
+      {
+        "domain": "easy005.local",
+        "domain_type": "internal"
+      },
+      {
+        "domain": "hr-portal.com",
+        "domain_type": "legit"
+      },
+      {
+        "domain": "support.com",
+        "domain_type": "attacker"
+      }
+    ],
+    "data_targets": [
+      {
+        "target_id": "t-easy-005",
+        "name": "Customer List",
+        "sensitivity": "high"
+      }
+    ]
+  },
+  "attack_plan": {
+    "initial_vector": "phish",
+    "phishing_email_id": "email-easy-005",
+    "credentials_used": {
+      "user_id": "u-005",
+      "method": "password_reuse"
+    },
+    "lateral_path": [
+      {
+        "src_host": "h-easy-005",
+        "dst_host": "h-easy-005",
+        "method": "smb"
+      }
+    ],
+    "data_access": {
+      "target_id": "t-easy-005",
+      "method": "file_sync"
+    },
+    "exfiltration": {
+      "channel": "https",
+      "destination_domain": "support.com"
+    },
+    "timeline": [
+      {
+        "step": 0,
+        "attacker_state": "phish_sent",
+        "artifacts": [
+          {
+            "artifact_type": "email",
+            "artifact_id": "email-easy-005"
+          }
+        ]
+      },
+      {
+        "step": 1,
+        "attacker_state": "creds_used",
+        "artifacts": [
+          {
+            "artifact_type": "log_template",
+            "artifact_id": "lt-auth-easy-005"
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "attacker_state": "exfil_attempt",
+        "artifacts": [
+          {
+            "artifact_type": "alert",
+            "artifact_id": "lt-alert-easy-005"
+          }
+        ]
+      }
+    ]
+  },
+  "patient_zero_host": "h-easy-005",
+  "compromised_user": "u-005",
+  "attacker_domain": "support.com",
+  "data_target": "t-easy-005",
+  "prompt_injection_payloads": [],
+  "seed_artifacts": {
+    "emails": [
+      {
+        "email_id": "email-easy-005",
+        "sender": "helpdesk@easy005.local",
+        "recipient": "user005@easy005.local",
+        "subject": "Account verification required",
+        "body": "Hi user005, please verify your account access.",
+        "injection_id": null,
+        "trust_tier": "untrusted",
+        "source": "email"
+      }
+    ],
+    "log_templates": [
+      {
+        "template_id": "lt-auth-easy-005",
+        "table": "auth_logs",
+        "template_body": "user=u-005 host=h-easy-005 src_ip=10.9.9.9 method=password_reuse success",
+        "injection_id": null,
+        "trust_tier": "verified",
+        "source": "telemetry"
+      },
+      {
+        "template_id": "lt-alert-easy-005",
+        "table": "alerts",
+        "template_body": "ALERT type=exfil_attempt severity=high stage=exfiltration message=\"dst_domain=support.com src_host=h-easy-005 compromised_user=u-005 data_target=t-easy-005\"",
+        "injection_id": null,
+        "trust_tier": "corroborated",
+        "source": "alerting"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_model": "offline-template",
+    "created_at": "2026-01-20T00:00:00Z",
+    "seed_source": "easy",
+    "max_steps": 15,
+    "taxonomy": {
+      "version": "v1",
+      "pattern_id": "easy-auth-alert",
+      "family": "easy",
+      "primary_action": "block_domain",
+      "surfaces": [
+        "email",
+        "log",
+        "alert"
+      ],
+      "objective_profile": [
+        "access",
+        "exfil"
+      ],
+      "trust_profile": {
+        "email": "untrusted",
+        "alert": "corroborated",
+        "log": "verified"
+      },
+      "notes": "Two-hop evidence with auth log + exfil alert attribution."
+    }
+  }
+}

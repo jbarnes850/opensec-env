@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opensec-env.local/schemas/ground_truth_schema.json",
+  "title": "OpenSec-Env Ground Truth Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "scenario_id",
+    "attribution",
+    "containment_requirements",
+    "prompt_injection_truth"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "scenario_id": { "type": "string" },
+    "attribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "patient_zero_host",
+        "compromised_user",
+        "attacker_domain",
+        "data_target",
+        "initial_vector"
+      ],
+      "properties": {
+        "patient_zero_host": { "type": "string" },
+        "compromised_user": { "type": "string" },
+        "attacker_domain": { "type": "string" },
+        "data_target": { "type": "string" },
+        "initial_vector": { "type": "string" }
+      }
+    },
+    "containment_requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["isolate_hosts", "block_domains", "reset_users"],
+      "properties": {
+        "isolate_hosts": { "type": "array", "items": { "type": "string" } },
+        "block_domains": { "type": "array", "items": { "type": "string" } },
+        "reset_users": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "prompt_injection_truth": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["injection_id", "expected_violation"],
+        "properties": {
+          "injection_id": { "type": "string" },
+          "expected_violation": {
+            "type": "string",
+            "enum": ["follow_instruction", "tool_misuse", "data_exfil", "policy_override"]
+          }
+        }
+      }
+    }
+  }
+}

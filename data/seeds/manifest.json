@@ -1,0 +1,1546 @@
+{
+  "train": [
+    {
+      "seed_path": "data/seeds/train/seed-001_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-001_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-002_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-002_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-003_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-003_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-004_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-004_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-005_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-005_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-006_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-006_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-007_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-007_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-008_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-008_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-009_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-009_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-010_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-010_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-011_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-011_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-012_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-012_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-013_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-013_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-014_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-014_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-015_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-015_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-016_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-016_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-017_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-017_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-018_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-018_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-019_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-019_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-020_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-020_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-021_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-021_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-022_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-022_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-023_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-023_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-024_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-024_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-025_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-025_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-026_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-026_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-027_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-027_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-028_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-028_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-029_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-029_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-030_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-030_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-031_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-031_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-032_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-032_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-033_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-033_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-034_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-034_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-035_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-035_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-036_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-036_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-037_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-037_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-038_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-038_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-039_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-039_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-040_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-040_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-041_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-041_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-042_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-042_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-043_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-043_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-044_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-044_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-045_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-045_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-046_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-046_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-047_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-047_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-048_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-048_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-049_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-049_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-050_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-050_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-051_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-051_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-052_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-052_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-053_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-053_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-054_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-054_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-055_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-055_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-056_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-056_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-057_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-057_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-058_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-058_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-059_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-059_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-060_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-060_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-061_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-061_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-062_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-062_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-063_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-063_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-064_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-064_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-065_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-065_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-066_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-066_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-067_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-067_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-068_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-068_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-069_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-069_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-070_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-070_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-071_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-071_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-072_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-072_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-073_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-073_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-074_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-074_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-075_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-075_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-076_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-076_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-077_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-077_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-078_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-078_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-079_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-079_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-080_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-080_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-081_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-081_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-082_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-082_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-083_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-083_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-084_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-084_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-085_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-085_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-086_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-086_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-087_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-087_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-088_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-088_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-089_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-089_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-090_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-090_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-091_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-091_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-092_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-092_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-093_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-093_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-094_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-094_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-095_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-095_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-096_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-096_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-097_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-097_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-098_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-098_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-099_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-099_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-100_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-100_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-101_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-101_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-102_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-102_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-103_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-103_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-104_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-104_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-105_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-105_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-106_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-106_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-107_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-107_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-108_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-108_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-109_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-109_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-110_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-110_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-111_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-111_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-112_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-112_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-113_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-113_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-114_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-114_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-115_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-115_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-116_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-116_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-117_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-117_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-118_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-118_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-119_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-119_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-120_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-120_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-121_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-121_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-122_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-122_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-123_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-123_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-124_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-124_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-125_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-125_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-126_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-126_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-127_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-127_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-128_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-128_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-129_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-129_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-130_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-130_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-131_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-131_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-132_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-132_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-133_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-133_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-134_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-134_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-135_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-135_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-136_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-136_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-137_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-137_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-138_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-138_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-139_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-139_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-140_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-140_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-141_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-141_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-142_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-142_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-143_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-143_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-144_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-144_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-145_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-145_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-146_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-146_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-147_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-147_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-148_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-148_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-149_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-149_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-150_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-150_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-151_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-151_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-152_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-152_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-153_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-153_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-154_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-154_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-155_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-155_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-156_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-156_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-157_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-157_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-158_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-158_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-159_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-159_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/train/seed-160_seed.json",
+      "ground_truth_path": "data/seeds/train/seed-160_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    }
+  ],
+  "eval": [
+    {
+      "seed_path": "data/seeds/eval/trivial-001_seed.json",
+      "ground_truth_path": "data/seeds/eval/trivial-001_ground_truth.json",
+      "tier": "trivial",
+      "taxonomy_id": "trivial-explicit",
+      "taxonomy_family": "trivial"
+    },
+    {
+      "seed_path": "data/seeds/eval/trivial-002_seed.json",
+      "ground_truth_path": "data/seeds/eval/trivial-002_ground_truth.json",
+      "tier": "trivial",
+      "taxonomy_id": "trivial-explicit",
+      "taxonomy_family": "trivial"
+    },
+    {
+      "seed_path": "data/seeds/eval/trivial-003_seed.json",
+      "ground_truth_path": "data/seeds/eval/trivial-003_ground_truth.json",
+      "tier": "trivial",
+      "taxonomy_id": "trivial-explicit",
+      "taxonomy_family": "trivial"
+    },
+    {
+      "seed_path": "data/seeds/eval/trivial-004_seed.json",
+      "ground_truth_path": "data/seeds/eval/trivial-004_ground_truth.json",
+      "tier": "trivial",
+      "taxonomy_id": "trivial-explicit",
+      "taxonomy_family": "trivial"
+    },
+    {
+      "seed_path": "data/seeds/eval/trivial-005_seed.json",
+      "ground_truth_path": "data/seeds/eval/trivial-005_ground_truth.json",
+      "tier": "trivial",
+      "taxonomy_id": "trivial-explicit",
+      "taxonomy_family": "trivial"
+    },
+    {
+      "seed_path": "data/seeds/eval/trivial-006_seed.json",
+      "ground_truth_path": "data/seeds/eval/trivial-006_ground_truth.json",
+      "tier": "trivial",
+      "taxonomy_id": "trivial-explicit",
+      "taxonomy_family": "trivial"
+    },
+    {
+      "seed_path": "data/seeds/eval/trivial-007_seed.json",
+      "ground_truth_path": "data/seeds/eval/trivial-007_ground_truth.json",
+      "tier": "trivial",
+      "taxonomy_id": "trivial-explicit",
+      "taxonomy_family": "trivial"
+    },
+    {
+      "seed_path": "data/seeds/eval/trivial-008_seed.json",
+      "ground_truth_path": "data/seeds/eval/trivial-008_ground_truth.json",
+      "tier": "trivial",
+      "taxonomy_id": "trivial-explicit",
+      "taxonomy_family": "trivial"
+    },
+    {
+      "seed_path": "data/seeds/eval/trivial-009_seed.json",
+      "ground_truth_path": "data/seeds/eval/trivial-009_ground_truth.json",
+      "tier": "trivial",
+      "taxonomy_id": "trivial-explicit",
+      "taxonomy_family": "trivial"
+    },
+    {
+      "seed_path": "data/seeds/eval/trivial-010_seed.json",
+      "ground_truth_path": "data/seeds/eval/trivial-010_ground_truth.json",
+      "tier": "trivial",
+      "taxonomy_id": "trivial-explicit",
+      "taxonomy_family": "trivial"
+    },
+    {
+      "seed_path": "data/seeds/eval/easy-001_seed.json",
+      "ground_truth_path": "data/seeds/eval/easy-001_ground_truth.json",
+      "tier": "easy",
+      "taxonomy_id": "easy-auth-alert",
+      "taxonomy_family": "easy"
+    },
+    {
+      "seed_path": "data/seeds/eval/easy-002_seed.json",
+      "ground_truth_path": "data/seeds/eval/easy-002_ground_truth.json",
+      "tier": "easy",
+      "taxonomy_id": "easy-auth-alert",
+      "taxonomy_family": "easy"
+    },
+    {
+      "seed_path": "data/seeds/eval/easy-003_seed.json",
+      "ground_truth_path": "data/seeds/eval/easy-003_ground_truth.json",
+      "tier": "easy",
+      "taxonomy_id": "easy-auth-alert",
+      "taxonomy_family": "easy"
+    },
+    {
+      "seed_path": "data/seeds/eval/easy-004_seed.json",
+      "ground_truth_path": "data/seeds/eval/easy-004_ground_truth.json",
+      "tier": "easy",
+      "taxonomy_id": "easy-auth-alert",
+      "taxonomy_family": "easy"
+    },
+    {
+      "seed_path": "data/seeds/eval/easy-005_seed.json",
+      "ground_truth_path": "data/seeds/eval/easy-005_ground_truth.json",
+      "tier": "easy",
+      "taxonomy_id": "easy-auth-alert",
+      "taxonomy_family": "easy"
+    },
+    {
+      "seed_path": "data/seeds/eval/easy-006_seed.json",
+      "ground_truth_path": "data/seeds/eval/easy-006_ground_truth.json",
+      "tier": "easy",
+      "taxonomy_id": "easy-auth-alert",
+      "taxonomy_family": "easy"
+    },
+    {
+      "seed_path": "data/seeds/eval/easy-007_seed.json",
+      "ground_truth_path": "data/seeds/eval/easy-007_ground_truth.json",
+      "tier": "easy",
+      "taxonomy_id": "easy-auth-alert",
+      "taxonomy_family": "easy"
+    },
+    {
+      "seed_path": "data/seeds/eval/easy-008_seed.json",
+      "ground_truth_path": "data/seeds/eval/easy-008_ground_truth.json",
+      "tier": "easy",
+      "taxonomy_id": "easy-auth-alert",
+      "taxonomy_family": "easy"
+    },
+    {
+      "seed_path": "data/seeds/eval/easy-009_seed.json",
+      "ground_truth_path": "data/seeds/eval/easy-009_ground_truth.json",
+      "tier": "easy",
+      "taxonomy_id": "easy-auth-alert",
+      "taxonomy_family": "easy"
+    },
+    {
+      "seed_path": "data/seeds/eval/easy-010_seed.json",
+      "ground_truth_path": "data/seeds/eval/easy-010_ground_truth.json",
+      "tier": "easy",
+      "taxonomy_id": "easy-auth-alert",
+      "taxonomy_family": "easy"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-161_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-161_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-162_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-162_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-163_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-163_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-164_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-164_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-165_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-165_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-166_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-166_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-167_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-167_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-168_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-168_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-169_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-169_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-170_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-170_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-171_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-171_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-172_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-172_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-173_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-173_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-174_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-174_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-175_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-175_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-176_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-176_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-177_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-177_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-178_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-178_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-179_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-179_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-180_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-180_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-181_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-181_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-182_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-182_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-183_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-183_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-184_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-184_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-185_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-185_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-186_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-186_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-187_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-187_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-188_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-188_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-189_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-189_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-190_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-190_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-191_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-191_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-192_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-192_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-193_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-193_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-194_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-194_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-195_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-195_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-containment",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-196_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-196_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-197_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-197_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "direct_harm-containment",
+      "taxonomy_family": "direct_harm"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-198_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-198_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-199_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-199_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "adaptive-query",
+      "taxonomy_family": "adaptive"
+    },
+    {
+      "seed_path": "data/seeds/eval/seed-200_seed.json",
+      "ground_truth_path": "data/seeds/eval/seed-200_ground_truth.json",
+      "tier": "standard",
+      "taxonomy_id": "data_exfil-query",
+      "taxonomy_family": "data_exfil"
+    }
+  ]
+}

@@ -1,0 +1,737 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opensec-env.local/schemas/seed_schema.json",
+  "title": "OpenSec-Env Seed Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "scenario_id",
+    "scenario_name",
+    "description",
+    "entities",
+    "attack_plan",
+    "patient_zero_host",
+    "compromised_user",
+    "attacker_domain",
+    "data_target",
+    "prompt_injection_payloads",
+    "seed_artifacts",
+    "metadata"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "scenario_id": {
+      "type": "string"
+    },
+    "scenario_name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "entities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "users",
+        "hosts",
+        "domains",
+        "data_targets"
+      ],
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/user"
+          }
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/host"
+          }
+        },
+        "domains": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/domain"
+          }
+        },
+        "data_targets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/data_target"
+          }
+        }
+      }
+    },
+    "attack_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "initial_vector",
+        "phishing_email_id",
+        "credentials_used",
+        "lateral_path",
+        "data_access",
+        "exfiltration",
+        "timeline"
+      ],
+      "properties": {
+        "initial_vector": {
+          "type": "string",
+          "enum": [
+            "phish"
+          ]
+        },
+        "phishing_email_id": {
+          "type": "string"
+        },
+        "credentials_used": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "user_id",
+            "method"
+          ],
+          "properties": {
+            "user_id": {
+              "type": "string"
+            },
+            "method": {
+              "type": "string"
+            }
+          }
+        },
+        "lateral_path": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "src_host",
+              "dst_host",
+              "method"
+            ],
+            "properties": {
+              "src_host": {
+                "type": "string"
+              },
+              "dst_host": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "data_access": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "target_id",
+            "method"
+          ],
+          "properties": {
+            "target_id": {
+              "type": "string"
+            },
+            "method": {
+              "type": "string"
+            }
+          }
+        },
+        "exfiltration": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "channel",
+            "destination_domain"
+          ],
+          "properties": {
+            "channel": {
+              "type": "string"
+            },
+            "destination_domain": {
+              "type": "string"
+            }
+          }
+        },
+        "timeline": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "step",
+              "attacker_state",
+              "artifacts"
+            ],
+            "properties": {
+              "step": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "attacker_state": {
+                "type": "string",
+                "enum": [
+                  "phish_sent",
+                  "creds_used",
+                  "lateral_move",
+                  "data_access",
+                  "exfil_attempt"
+                ]
+              },
+              "artifacts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "artifact_type",
+                    "artifact_id"
+                  ],
+                  "properties": {
+                    "artifact_type": {
+                      "type": "string",
+                      "enum": [
+                        "email",
+                        "log_template",
+                        "alert"
+                      ]
+                    },
+                    "artifact_id": {
+                      "type": "string"
+                    },
+                    "variant_action_type": {
+                      "type": "string"
+                    },
+                    "variant_params": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "attack_graph": {
+      "$ref": "#/$defs/attack_graph"
+    },
+    "patient_zero_host": {
+      "type": "string"
+    },
+    "compromised_user": {
+      "type": "string"
+    },
+    "attacker_domain": {
+      "type": "string"
+    },
+    "data_target": {
+      "type": "string"
+    },
+    "prompt_injection_payloads": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/prompt_injection"
+      }
+    },
+    "seed_artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "emails",
+        "log_templates"
+      ],
+      "properties": {
+        "emails": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/email_artifact"
+          }
+        },
+        "log_templates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/log_template"
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "generator_model",
+        "created_at",
+        "seed_source"
+      ],
+      "properties": {
+        "generator_model": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "seed_source": {
+          "type": "string"
+        },
+        "max_steps": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "taxonomy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "version",
+            "pattern_id",
+            "family"
+          ],
+          "properties": {
+            "version": {
+              "type": "string"
+            },
+            "pattern_id": {
+              "type": "string"
+            },
+            "family": {
+              "type": "string"
+            },
+            "primary_action": {
+              "type": "string"
+            },
+            "surfaces": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "email",
+                  "alert",
+                  "log"
+                ]
+              }
+            },
+            "objective_profile": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "trust_profile": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "alert": {
+                  "type": "string"
+                },
+                "log": {
+                  "type": "string"
+                }
+              }
+            },
+            "notes": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "user": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "user_id",
+        "email",
+        "role",
+        "dept"
+      ],
+      "properties": {
+        "user_id": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "dept": {
+          "type": "string"
+        }
+      }
+    },
+    "host": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "host_id",
+        "hostname",
+        "owner_user_id",
+        "ip",
+        "os"
+      ],
+      "properties": {
+        "host_id": {
+          "type": "string"
+        },
+        "hostname": {
+          "type": "string"
+        },
+        "owner_user_id": {
+          "type": "string"
+        },
+        "ip": {
+          "type": "string"
+        },
+        "os": {
+          "type": "string"
+        }
+      }
+    },
+    "domain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "domain",
+        "domain_type"
+      ],
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "domain_type": {
+          "type": "string",
+          "enum": [
+            "attacker",
+            "legit",
+            "internal"
+          ]
+        }
+      }
+    },
+    "data_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target_id",
+        "name",
+        "sensitivity",
+        "description"
+      ],
+      "properties": {
+        "target_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "sensitivity": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "prompt_injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "injection_id",
+        "surface",
+        "payload",
+        "expected_violation"
+      ],
+      "properties": {
+        "injection_id": {
+          "type": "string"
+        },
+        "surface": {
+          "type": "string",
+          "enum": [
+            "email",
+            "alert",
+            "log"
+          ]
+        },
+        "payload": {
+          "type": "string"
+        },
+        "expected_violation": {
+          "type": "string",
+          "enum": [
+            "follow_instruction",
+            "tool_misuse",
+            "data_exfil",
+            "policy_override"
+          ]
+        },
+        "target_action": {
+          "type": "string"
+        },
+        "target_params": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "injection_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "objective": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "email_artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "email_id",
+        "sender",
+        "recipient",
+        "subject",
+        "body"
+      ],
+      "properties": {
+        "email_id": {
+          "type": "string"
+        },
+        "sender": {
+          "type": "string"
+        },
+        "recipient": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "injection_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "trust_tier": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "log_template": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "template_id",
+        "table",
+        "template_body"
+      ],
+      "properties": {
+        "template_id": {
+          "type": "string"
+        },
+        "table": {
+          "type": "string"
+        },
+        "template_body": {
+          "type": "string"
+        },
+        "injection_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "trust_tier": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "attack_graph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "states"
+      ],
+      "properties": {
+        "start_state": {
+          "type": "string"
+        },
+        "objectives": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "initial_artifacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/attack_graph_artifact"
+          }
+        },
+        "states": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/attack_graph_state"
+          }
+        }
+      }
+    },
+    "attack_graph_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actions"
+      ],
+      "properties": {
+        "actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/attack_graph_action"
+          }
+        }
+      }
+    },
+    "attack_graph_action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action_type"
+      ],
+      "properties": {
+        "action_type": {
+          "type": "string"
+        },
+        "next_state": {
+          "type": "string"
+        },
+        "match_params": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "requires": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "string",
+              "number",
+              "boolean",
+              "array",
+              "null"
+            ]
+          }
+        },
+        "effects": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "string",
+              "number",
+              "boolean",
+              "array",
+              "null"
+            ]
+          }
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/attack_graph_artifact"
+          }
+        }
+      }
+    },
+    "attack_graph_artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_type",
+        "artifact_id"
+      ],
+      "properties": {
+        "artifact_type": {
+          "type": "string",
+          "enum": [
+            "email",
+            "log_template",
+            "alert"
+          ]
+        },
+        "artifact_id": {
+          "type": "string"
+        },
+        "step": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "match_params": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

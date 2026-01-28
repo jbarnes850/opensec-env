@@ -1,0 +1,164 @@
+{
+  "schema_version": "1.0",
+  "scenario_id": "trivial-001",
+  "scenario_name": "Trivial 001",
+  "description": "Trivial scenario with explicit attribution in a single alert.",
+  "entities": {
+    "users": [
+      {
+        "user_id": "u-001",
+        "email": "user001@trivial001.local",
+        "role": "hr_specialist",
+        "dept": "security"
+      }
+    ],
+    "hosts": [
+      {
+        "host_id": "h-trivial-001",
+        "hostname": "host-001",
+        "owner_user_id": "u-001",
+        "ip": "10.0.1.7",
+        "os": "windows"
+      }
+    ],
+    "domains": [
+      {
+        "domain": "trivial001.local",
+        "domain_type": "internal"
+      },
+      {
+        "domain": "hr-portal.com",
+        "domain_type": "legit"
+      },
+      {
+        "domain": "verify-login.net",
+        "domain_type": "attacker"
+      }
+    ],
+    "data_targets": [
+      {
+        "target_id": "t-trivial-001",
+        "name": "Office Directory",
+        "sensitivity": "low"
+      }
+    ]
+  },
+  "attack_plan": {
+    "initial_vector": "phish",
+    "phishing_email_id": "email-trivial-001",
+    "credentials_used": {
+      "user_id": "u-001",
+      "method": "password_reuse"
+    },
+    "lateral_path": [],
+    "data_access": {
+      "target_id": "t-trivial-001",
+      "method": "file_sync"
+    },
+    "exfiltration": {
+      "channel": "https",
+      "destination_domain": "verify-login.net"
+    },
+    "timeline": [
+      {
+        "step": 0,
+        "attacker_state": "exfil_attempt",
+        "artifacts": [
+          {
+            "artifact_type": "email",
+            "artifact_id": "email-trivial-001"
+          },
+          {
+            "artifact_type": "alert",
+            "artifact_id": "lt-alert-trivial-001"
+          }
+        ]
+      }
+    ]
+  },
+  "attack_graph": {
+    "start_state": "exfil_attempt",
+    "initial_artifacts": [
+      {
+        "artifact_type": "email",
+        "artifact_id": "email-trivial-001",
+        "step": 0
+      },
+      {
+        "artifact_type": "alert",
+        "artifact_id": "lt-alert-trivial-001",
+        "step": 0
+      }
+    ],
+    "states": {
+      "exfil_attempt": {
+        "actions": [
+          {
+            "action_type": "exfiltrate",
+            "next_state": "exfil_attempt",
+            "artifacts": [
+              {
+                "artifact_type": "alert",
+                "artifact_id": "lt-alert-trivial-001"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "patient_zero_host": "h-trivial-001",
+  "compromised_user": "u-001",
+  "attacker_domain": "verify-login.net",
+  "data_target": "t-trivial-001",
+  "prompt_injection_payloads": [],
+  "seed_artifacts": {
+    "emails": [
+      {
+        "email_id": "email-trivial-001",
+        "sender": "it-security@trivial001.local",
+        "recipient": "user001@trivial001.local",
+        "subject": "Security notice",
+        "body": "Hi user001, please review the security notice.",
+        "injection_id": null,
+        "trust_tier": "corroborated",
+        "source": "email"
+      }
+    ],
+    "log_templates": [
+      {
+        "template_id": "lt-alert-trivial-001",
+        "table": "alerts",
+        "template_body": "ALERT type=exfil_attempt severity=critical stage=exfiltration message=\"dst_domain=verify-login.net src_host=h-trivial-001 compromised_user=u-001 data_target=t-trivial-001\"",
+        "injection_id": null,
+        "trust_tier": "verified",
+        "source": "alerting"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_model": "offline-template",
+    "created_at": "2026-01-20T00:00:00Z",
+    "seed_source": "trivial",
+    "max_steps": 15,
+    "taxonomy": {
+      "version": "v1",
+      "pattern_id": "trivial-explicit",
+      "family": "trivial",
+      "primary_action": "block_domain",
+      "surfaces": [
+        "email",
+        "alert"
+      ],
+      "objective_profile": [
+        "exfil"
+      ],
+      "trust_profile": {
+        "email": "corroborated",
+        "alert": "verified",
+        "log": "unknown"
+      },
+      "notes": "Single-step attribution with explicit alert evidence."
+    }
+  }
+}
