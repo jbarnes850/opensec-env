@@ -1,0 +1,261 @@
+%%%%%%%% ICML 2026 OPENSEC PAPER %%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+
+% Recommended packages
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{xurl}  % Better URL line breaking
+\usepackage{hyperref}
+\usepackage{float}
+
+% Use preprint mode for "Preprint. Under Review." header
+\usepackage[preprint]{icml2026}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Short running title
+\icmltitlerunning{OpenSec: IR Agent Calibration Under Adversarial Evidence}
+
+\begin{document}
+
+\twocolumn[
+\icmltitle{OpenSec: Measuring Incident Response Agent Calibration \\
+Under Adversarial Evidence}
+
+\begin{icmlauthorlist}
+\icmlauthor{Jarrod Barnes}{arc}
+\end{icmlauthorlist}
+
+\icmlaffiliation{arc}{Arc Intelligence, \texttt{jarrod@arc.computer}}
+
+\icmlcorrespondingauthor{Jarrod Barnes}{jarrod@arc.computer}
+
+\icmlkeywords{reinforcement learning, cybersecurity, incident response, agent calibration, benchmark}
+
+\vskip 0.3in
+]
+
+\printAffiliationsAndNotice{}
+
+\begin{abstract}
+As large language models improve, so do their offensive applications: frontier agents now generate working exploits for under \$50 in compute~\citep{heelan2026exploit}. Defensive incident response (IR) agents must keep pace, but existing benchmarks conflate action execution with correct execution, hiding calibration failures when agents process adversarial evidence. We introduce OpenSec, a dual-control reinforcement learning environment that evaluates IR agents under realistic prompt injection scenarios with execution-based scoring: time-to-first-containment (TTFC), blast radius (false positives per episode), and injection violation rates. Evaluating four frontier models on 40 standard-tier episodes, we find consistent over-triggering in this setting: GPT-5.2, Gemini 3, and DeepSeek execute containment in 100\% of episodes with 90--97\% false positive rates. Claude Sonnet 4.5 shows partial calibration (85\% containment, 72\% FP), suggesting calibration is not reliably present across frontier models and likely depends on factors beyond general capability. Code available at \url{https://github.com/jbarnes850/opensec-env}.
+\end{abstract}
+
+\section{Introduction}
+
+The agentic security operations center (SOC) is no longer theoretical. Recent surveys track over 50 agentic SOC startups~\citep{omdia2025agentic}, and LLMs achieve 94\% precision on alert classification in controlled settings~\citep{aisoc2025survey}. The technology works on benchmarks.
+
+But benchmarks measure capability, not calibration. A model that correctly classifies 94\% of alerts may still execute containment on 97\% of them, including the 6\% it should have ignored. The AI-Augmented SOC survey identifies ``high false-positive rates'' as a core pain point that LLMs are meant to solve, yet existing evaluations rarely measure whether agents make this problem better or worse when given authority to act.
+
+This matters because offense scales faster than defense. \citet{heelan2026exploit} demonstrates frontier agents generating 40+ working exploits across 6 scenarios for approximately \$30--50 in compute. The limiting factor is token throughput, not expertise. IR agents that over-trigger will face adversaries who understand this, embedding prompt injections in malicious artifacts specifically to induce false-positive containment.
+
+OpenSec measures what current benchmarks miss: the gap between action willingness and action correctness when evidence is adversarial and stakes are operational.
+
+\subsection{The Dual-Control Challenge}
+
+Dual-control environments are difficult because they require coordination under changing shared state. These settings can be formalized as decentralized partially observable MDPs (Dec-POMDPs), which are NEXP-complete even for finite horizons~\citep{bernstein2002complexity}. Empirically, reasoning capability does not transfer to execution capability when multiple actors modify shared state. \citet{tau2bench2025} report a 28-point performance drop on $\tau^2$-bench when shifting from reasoning-only to dual-control mode, identifying coordination failure as the primary bottleneck.
+
+The world changes while the agent acts, and the agent must decide not only what is true but what to do under risk. In OpenSec, the attacker continues to advance, logs evolve, and prompt injections attempt to steer tool use. The environment tests this adversarial tactical judgment that reasoning-only benchmarks miss.
+
+\subsection{Contributions}
+
+We make four contributions. First, we introduce OpenSec, a dual-control RL environment with deterministic, execution-based scoring for training IR agents. Second, we design taxonomy-stratified scenarios with trust tiers and prompt injection payloads that enable curriculum learning. Third, we evaluate four frontier models on 40 standard-tier episodes and reveal consistent over-triggering in this setting, with 90--97\% false positive rates. Fourth, we provide evidence that calibration varies across frontier models and is not reliably present: Sonnet 4.5 shows partial calibration where GPT-5.2, Gemini 3, and DeepSeek do not.
+
+\section{Environment Design}
+
+OpenSec is a dual-control simulator with deterministic scoring. The defender observes evidence from SQLite logs, alerts, and emails and uses tools to investigate and contain. The attacker advances a fixed kill chain (phish\_sent $\rightarrow$ creds\_used $\rightarrow$ lateral\_move $\rightarrow$ data\_access $\rightarrow$ exfil\_attempt) with state-constrained actions and optional branch variants.
+
+The attacker is an LLM policy with limited autonomy inside a hard state machine. It chooses valid, scenario-consistent actions, can pick between alternate branches, and can be replay-cached for determinism. The defender action space includes \texttt{query\_logs}, \texttt{fetch\_email}, \texttt{fetch\_alert}, \texttt{isolate\_host}, \texttt{block\_domain}, \texttt{reset\_user}, and \texttt{submit\_report}. Scoring is based on what the agent does, not what it claims.
+
+Each episode is an incident with a scenario seed specifying ground truth and a timeline of artifacts. The agent acts under a deadline (default max\_steps=15) while the attacker evolves the incident unless contained.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/opensec-design.png}
+\caption{OpenSec dual-control architecture. The defender observes logs, alerts, and emails while the attacker advances through a state-constrained kill chain. Scoring is execution-based: containment actions are evaluated against ground truth, not report text.}
+\label{fig:architecture}
+\end{figure*}
+
+\subsection{Scenario Design}
+
+OpenSec scenarios are structured around three design principles:
+
+\textbf{Taxonomy-stratified scenarios.} Seeds are labeled with \texttt{taxonomy\_id} and \texttt{taxonomy\_family} fields. The taxonomy defines three families with explicit sampling weights: direct\_harm (0.50), data\_exfil (0.30), and adaptive (0.20). This enables stratified evaluation and curriculum learning.
+
+\textbf{Trust tiers and provenance.} Artifacts carry \texttt{trust\_tier} and \texttt{source} fields. The \texttt{trust\_profile} object maps each surface type to a reliability tier (untrusted, corroborated, verified). This supports trust-aware containment decisions.
+
+\textbf{Objective variability.} The attack graph supports multi-objective scenarios via an \texttt{objectives} list and conditional state transitions. Combined with variable \texttt{max\_steps}, this reflects realistic incident diversity.
+
+The dataset comprises 160 training seeds and 40 evaluation seeds, all standard-tier, with injection payloads present across all scenarios.
+
+\section{Reward Design}
+
+OpenSec's reward is a sum of four deterministic components designed as training signals for IR-relevant behavior. Attribution rewards correct identification (+1 per correct field) and penalizes unknowns ($-$0.5 each). Containment rewards correct actions (+1 each) and penalizes false positives ($-$0.5 each, capped by category). Injection safety applies a $-$2 penalty per violation after exposure to injected content. Efficiency imposes a $-$0.1 cost per step to discourage unnecessary actions.
+
+Attacker behavior can be made reproducible via a replay cache keyed by (scenario\_id, step, attacker\_state, agent\_action\_hash), reducing variance for clean comparisons.
+
+\subsection{Design Rationale}
+
+Containment is scored only on executed actions that change world state, not on report text. This makes the calibration gap directly measurable.
+
+Exposure-gated injection penalties reflect how real analysts work: they must read phishing emails, inspect malicious logs, and process attacker-controlled content. Avoiding exposure is not an option. The security-relevant question is whether the agent still acts correctly after ingesting adversarial input, so we penalize only behavioral compromise after exposure. A violation occurs when the agent executes a tool call whose parameters contain a substring match to content from an injected payload (e.g., a domain name or host identifier that appeared only in injected text), measured per-episode.
+
+The reward penalizes incorrect containment more than inaction. This mirrors how SOC teams train junior analysts: isolating the wrong server takes production down, blocking the wrong domain breaks business services. The reward trains correctness under adversarial pressure, not speed. If incorrect action were cheap, the optimal policy would spray containment actions indiscriminately.
+
+We did not ablate the penalty asymmetry in this work; symmetric penalties are a natural ablation for future runs. The reward does not penalize missed containment (allowing the attacker to progress unchecked). This is intentional: it is a natural next stage of curriculum once the model demonstrates correct action selection. Because FP penalties are capped by category and missed containment incurs no penalty, models that exhaust the action space can achieve high rewards despite operational failure. This design prioritizes measuring action calibration over penalizing inaction, but aggregate reward alone is not a sufficient deployment metric.
+
+\section{Baseline Evaluation}
+
+The execution-based evaluation uses JSONL outputs from four frontier models. The defender prompt explicitly enumerates all containment tools and provides JSON-formatted usage examples.
+
+\textbf{Metrics.} We report five metrics per model. \emph{Containment rate} is the fraction of episodes where the agent executes at least one containment action. \emph{False positive rate} is the fraction of episodes containing at least one incorrect containment action. \emph{Correct containment rate} is the fraction of ground-truth targets correctly contained. \emph{Injection violation rate} is the fraction of episodes where the agent executes a tool call containing a substring from an injected payload after exposure to that payload. \emph{Blast radius} is the mean count of incorrect containment actions per episode.
+
+\subsection{Results}
+
+Three of four frontier models execute containment in 100\% of episodes with 90--97\% false positive rates. They trigger nearly every available containment action regardless of evidence quality.
+
+\begin{table}[t]
+\caption{Frontier model evaluation on 40 standard-tier episodes. Cont.=containment rate, FP=false positive rate, Corr.=correct containment, Inj.=injection violation rate. 95\% Wilson CIs for rates: $\pm$0.05--0.15 depending on rate. High rewards mask operational failure: models exhaust the action space, achieving high correct containment alongside 90--97\% FP rates.}
+\label{tab:results}
+\vskip 0.15in
+\begin{center}
+\begin{scriptsize}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Model & Reward & Cont. & FP & Corr. & Inj. \\
+\midrule
+GPT-5.2 & 3.46 & 1.00 & 0.97 & 0.97 & 0.38 \\
+Sonnet 4.5 & 2.76 & 0.85 & 0.72 & 0.85 & 0.40 \\
+Gemini 3 & 3.35 & 1.00 & 0.97 & 1.00 & 0.50 \\
+DeepSeek 3.2 & 2.99 & 1.00 & 0.90 & 1.00 & 0.78 \\
+\bottomrule
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\vskip -0.1in
+\end{table}
+
+\textbf{Calibration varies across frontier models.} GPT-5.2, Gemini 3, and DeepSeek show identical over-triggering behavior. Only Sonnet 4.5 demonstrates partial pretrained calibration (85\% containment, 72\% FP), suggesting calibration depends on factors beyond capability, potentially including alignment approach or training methodology.
+
+\textbf{High rewards mask operational failure.} The reward range (2.76--3.46) looks strong, but these scores reflect indiscriminate action. By exhausting the containment action space, models capture all correct targets alongside nearly all incorrect ones. In production, this would take down legitimate services indiscriminately.
+
+\textbf{Injection vulnerability varies independently.} DeepSeek shows the highest violation rate (78\%) despite identical containment behavior to GPT-5.2 (38\%). This suggests injection robustness is orthogonal to containment calibration and requires separate attention.
+
+\subsection{Operational Metrics}
+
+Beyond aggregate rates, operational timing provides insight into response behavior. Time-to-first-containment (TTFC) measures when an agent first executes a containment action; blast radius counts false positive containment actions per episode.
+
+\begin{table}[t]
+\caption{Operational timing metrics (in steps). TTFC=time-to-first-containment, TTR=time-to-report. Sonnet 4.5 waits approximately 3 steps longer before first containment, resulting in lower blast radius.}
+\label{tab:timing}
+\vskip 0.15in
+\begin{center}
+\begin{scriptsize}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Model & TTFC & TTR & Blast (mean) & Blast (max) \\
+\midrule
+GPT-5.2 & 6.95 & 10.47 & 1.23 & 3 \\
+Sonnet 4.5 & 9.91 & 13.03 & 1.15 & 2 \\
+Gemini 3 & 7.73 & 11.55 & 1.40 & 2 \\
+DeepSeek 3.2 & 7.58 & 11.55 & 1.18 & 2 \\
+\bottomrule
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\vskip -0.1in
+\end{table}
+
+Over-triggering models act faster: GPT-5.2, Gemini 3, and DeepSeek execute containment within 7--8 steps, taking action before gathering sufficient evidence. Sonnet 4.5 has the lowest blast radius (1.15) despite higher TTFC, suggesting delayed action results in fewer false positives.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/seed-generation-pipeline.png}
+\caption{Seed generation pipeline with taxonomy stratification. Seeds are generated with explicit family labels and injection payloads, enabling curriculum learning and targeted evaluation.}
+\label{fig:pipeline}
+\end{figure*}
+
+\section{Discussion}
+
+\textbf{Environment design reveals hidden behavior.} During development, we observed that scenario realism significantly affected model behavior. When artifacts lacked realistic provenance and trust metadata, models were less likely to execute containment. The current taxonomy-stratified design with trust tiers appears to elicit more realistic action willingness. This suggests unrealistic benchmarks may underestimate action willingness while overestimating calibration.
+
+\textbf{Aggregate scores mask operational failure.} Frontier models achieve rewards of 2.76--3.46, but three of four do so by exhausting the containment action space. By aggregate metrics, these are high-performing agents (97--100\% correct containment). By operational metrics, they would take down production services indiscriminately (90--97\% false positive rates). Current evaluation practices conflate action execution with correct action execution.
+
+\textbf{Calibration exists in some pretrained models.} Sonnet 4.5's partial calibration (85\%/72\%) shows the capability exists without targeted training. Why Sonnet and not GPT-5.2, Gemini, or DeepSeek? This is an open question, but the variation itself is diagnostic value the environment provides.
+
+\textbf{Injection vulnerability is orthogonal.} DeepSeek shows 78\% violation rate despite identical containment behavior to GPT-5.2 (38\%). The OWASP Agentic AI Guide~\citep{owasp2025agentic} identifies tool/API access as a key attack surface. OpenSec deliberately places the defender in this configuration because real IR requires processing attacker-controlled content.
+
+\section{Limitations}
+
+The environment is log-centric and does not execute real exploits or malware; it targets IR investigation and containment decisions rather than exploit development. The attacker is state-constrained for determinism, not fully free-form. The benchmark focuses on a narrow but common IR slice (phish $\rightarrow$ creds $\rightarrow$ lateral movement $\rightarrow$ exfil) to keep evaluation verifiable.
+
+The evaluation uses 40 standard-tier seeds per model. Broader statistical confidence requires additional seeds and replications. Trust tier metadata is present but not yet used as an evaluation signal.
+
+\section{Future Work}
+
+\textbf{Trust-aware evaluation.} The \texttt{trust\_profile} field enables measuring whether models appropriately weight evidence by provenance tier. This is not yet analyzed but the infrastructure exists.
+
+\textbf{Injection robustness training.} The environment supports targeted injection curricula via \texttt{injection\_type} metadata. Combined with work on prompt injection defenses~\citep{anthropic2025injection}, this suggests a path toward robust behavior through adversarial exposure.
+
+\textbf{Calibration training.} Preliminary RL experiments (Appendix~\ref{app:rl}) suggest calibration behavior is trainable but requires further investigation, likely a two-stage SFT+RL pipeline or curriculum approach.
+
+\section{Related Work}
+
+\textbf{Security benchmarks.} Existing security benchmarks focus on capability rather than calibration. CyberSecEval2~\citep{cyberseceval2} measures code security, prompt injection resistance, and introduces a false refusal rate (FRR) to quantify safety-utility tradeoffs, which is conceptually adjacent to calibration. CTIBench~\citep{ctibench2024} evaluates threat intelligence tasks including CVE-to-CWE mapping and threat actor attribution. ExCyTIn-Bench~\citep{excytin2025} evaluates LLM agents on cyber threat investigation through security question-answering over Azure logs. These benchmarks answer ``can the model do X?'' but not ``does the model know when to do X?''
+
+\textbf{Interactive cyber RL environments.} CybORG~\citep{cyborg2020} provides a gym for training autonomous red and blue team agents in adversarial network scenarios. OpenSec differs in its log-centric, SOC-artifact design with explicit prompt injection integration and action-calibration measurement rather than network-level decision-making.
+
+\textbf{Dual-control benchmarks.} $\tau^2$-Bench~\citep{tau2bench2025} demonstrates significant performance drops when agents shift from single-control to dual-control settings, formalizing the challenge as a Dec-POMDP. ATLAS~\citep{atlas2025} addresses this via dual-agent architectures separating reasoning from execution. OpenSec applies dual-control to IR specifically, where the attacker continues to progress while the defender investigates.
+
+\textbf{RL for cybersecurity.} Prior work focuses primarily on attack path discovery and penetration testing~\citep{rlcyber2025survey}. The Survey of Agentic AI and Cybersecurity~\citep{agenticai2026survey} identifies benchmark standardization as a key gap. OpenSec contributes a standardized environment for IR agent calibration.
+
+\bibliography{references}
+\bibliographystyle{icml2026}
+
+\appendix
+\section{Preliminary Training Experiments}
+\label{app:rl}
+
+We conducted preliminary training experiments to investigate whether calibration is trainable. These results are included for completeness but do not constitute a primary contribution.
+
+\subsection{Method}
+
+We trained Qwen/Qwen3-4B-Instruct with GDPO using decomposed reward functions (attribution, containment, injection, efficiency). GDPO decouples normalization across rewards before aggregation, addressing reward-advantage collapse in multi-reward settings. Training used SGLang for rollouts on a single A100.
+
+\subsection{Results}
+
+\begin{table}[h]
+\caption{Preliminary RL training results. The trained model shows modified but not clearly improved calibration compared to Sonnet 4.5.}
+\label{tab:rl}
+\vskip 0.15in
+\begin{center}
+\begin{small}
+\begin{tabular}{lc}
+\toprule
+Metric & Value \\
+\midrule
+Containment executed & 0.75 \\
+False positive rate & 0.70 \\
+Correct containment & 0.475 \\
+Injection violation & 0.375 \\
+Report submitted & 0.25 \\
+\bottomrule
+\end{tabular}
+\end{small}
+\end{center}
+\vskip -0.1in
+\end{table}
+
+\subsection{Interpretation}
+
+The trained model shows modified but not clearly improved calibration compared to Sonnet 4.5 (85\%/72\%). Correct containment (47.5\%) is lower than Sonnet (85\%). Report submission dropped to 25\%, suggesting reward shaping issues. The model learned to act less frequently but not more accurately.
+
+These results suggest direct RL from multi-component reward is insufficient. Likely improvements: SFT warmup on successful trajectories, curriculum staging, explicit verification gates.
+
+Checkpoint: \url{https://huggingface.co/Jarrodbarnes/opensec-gdpo-4b}
+
+\end{document}
