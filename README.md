@@ -1,12 +1,14 @@
 # OpenSec
 
 [![OpenEnv Compatible](https://img.shields.io/badge/OpenEnv-Compatible-2ea44f)](https://github.com/meta-pytorch/OpenEnv)
-![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
+![Python](https://img.shields.io/badge/Python-3.11%2B-blue)
+[![HF Dataset](https://img.shields.io/badge/HF-Dataset-green)](https://huggingface.co/datasets/Jarrodbarnes/opensec-seeds)
 [![HF Model](https://img.shields.io/badge/HF-Model-yellow)](https://huggingface.co/Jarrodbarnes/opensec-gdpo-4b)
 [![HF Space](https://img.shields.io/badge/HF-Space-blue)](https://huggingface.co/spaces/jarrodbarnes/opensec-env)
 [![Technical Report](https://img.shields.io/badge/Paper-Technical%20Report%20(PDF)-orange)](docs/opensec-technical-report.pdf)
+[![arXiv](https://img.shields.io/badge/arXiv-2601.21083-b31b1b.svg)](https://arxiv.org/abs/2601.21083)
 
-> **[Read the Technical Report (PDF)](docs/opensec-technical-report.pdf)** - Full methodology, evaluation results, and related work for OpenSec.
+> **[Read the Paper on arXiv](https://arxiv.org/abs/2601.21083)** | **[Technical Report (PDF)](docs/opensec-technical-report.pdf)** - Full methodology, evaluation results, and related work.
 
 A dual-control RL environment for incident response agent training. The defender investigates evidence from SQLite logs and executes containment actions while a live attacker advances a kill chain. Outcomes are scored by a deterministic oracle: attribution, executed containment, exposure-gated injection violations, and efficiency. The attacker is an LLM policy with limited autonomy inside a state machine; it is stochastic by default and can be replay-cached for low-variance evaluation.
 
