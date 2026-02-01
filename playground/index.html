@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenSec Trace Playground</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --border: #e5e5e5;
+      --text: #171717;
+      --text-secondary: #525252;
+      --text-muted: #a3a3a3;
+      --blue: #2563eb;
+      --green: #16a34a;
+      --orange: #ea580c;
+      --red: #dc2626;
+      --violet: #7c3aed;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    header h1 {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .watch-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 8px;
+      padding-left: 12px;
+      border-left: 1px solid var(--border);
+    }
+
+    .watch-input {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      width: 220px;
+      background: var(--bg);
+    }
+
+    .watch-input:focus {
+      outline: none;
+      border-color: var(--blue);
+    }
+
+    .btn-watch {
+      min-width: 70px;
+    }
+
+    .btn-watch.watching {
+      background: var(--green);
+      color: white;
+      border-color: var(--green);
+    }
+
+    .btn-watch.watching::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: white;
+      border-radius: 50%;
+      margin-right: 6px;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .btn {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn:hover { background: var(--bg); border-color: var(--text-muted); }
+
+    select.btn { padding-right: 28px; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23525252' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      height: calc(100vh - 49px);
+    }
+
+    aside {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .aside-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .aside-header h2 {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+    }
+
+    #episode-list {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .episode-item {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.1s;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4px;
+    }
+
+    .episode-item:hover { background: var(--bg); }
+    .episode-item.selected { background: #eff6ff; border-left: 3px solid var(--blue); padding-left: 13px; }
+
+    .episode-id {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .episode-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      grid-column: 1 / -1;
+    }
+
+    .episode-stats {
+      display: flex;
+      gap: 8px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+    }
+
+    .stat-correct { color: var(--green); }
+    .stat-fp { color: var(--orange); }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .timeline-header {
+      padding: 16px 24px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .timeline-title {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .timeline-title h2 {
+      font-size: 18px;
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+
+    .timeline-title .model {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .timeline-summary {
+      display: flex;
+      gap: 24px;
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .timeline-summary strong { color: var(--text); font-weight: 500; }
+
+    #timeline {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 24px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 32px 1fr auto;
+      gap: 12px;
+      padding: 12px 0;
+      padding-left: 12px;
+      margin-left: -12px;
+      border-bottom: 1px solid var(--border);
+      border-left: 3px solid transparent;
+      align-items: start;
+      transition: border-color 0.15s;
+    }
+
+    .step:last-child { border-bottom: none; }
+
+    .step.step-containment { border-left-color: var(--green); background: #f0fdf4; }
+    .step.step-fp { border-left-color: var(--orange); background: #fffbeb; }
+    .step.step-injection { border-left-color: var(--red); background: #fef2f2; }
+
+    .step-num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-align: right;
+      padding-top: 2px;
+    }
+
+    .step-content { min-width: 0; }
+
+    .step-action {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .step-params {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 100%;
+      cursor: help;
+    }
+
+    .step-params:hover {
+      white-space: normal;
+      word-break: break-all;
+    }
+
+    .step-attacker {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--violet);
+      margin-top: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f5f3ff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      opacity: 0.85;
+    }
+
+    .step-attacker::before {
+      content: 'Attacker';
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--violet);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .badge-investigation { background: #dbeafe; color: var(--blue); }
+    .badge-correct { background: #dcfce7; color: var(--green); }
+    .badge-fp { background: #ffedd5; color: var(--orange); }
+    .badge-injection { background: #fee2e2; color: var(--red); }
+    .badge-report { background: #f3e8ff; color: var(--violet); }
+
+    .ttfc-marker {
+      font-size: 10px;
+      background: #fef3c7;
+      color: #b45309;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-left: 4px;
+    }
+
+    #score-breakdown {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 16px 24px;
+    }
+
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .score-section {
+      padding-right: 24px;
+      border-right: 1px solid var(--border);
+    }
+
+    .score-section:last-child {
+      border-right: none;
+      padding-right: 0;
+    }
+
+    .score-section h3 {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .score-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .score-check { color: var(--green); }
+    .score-x { color: var(--red); }
+    .score-fp { color: var(--orange); }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 48px;
+    }
+
+    .empty-state h3 {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .empty-state p { font-size: 14px; max-width: 400px; }
+
+    .drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 48px;
+      margin-top: 24px;
+      transition: all 0.2s;
+    }
+
+    .drop-zone.drag-over {
+      border-color: var(--blue);
+      background: #eff6ff;
+    }
+
+    #file-input { display: none; }
+
+    @media (max-width: 768px) {
+      main { grid-template-columns: 1fr; }
+      aside { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>OpenSec Trace Playground</h1>
+    <div class="header-controls">
+      <input type="file" id="file-input" accept=".jsonl">
+      <button class="btn" onclick="document.getElementById('file-input').click()">Load File</button>
+      <div class="watch-controls">
+        <input type="text" id="watch-path" class="watch-input" placeholder="../outputs/llm_baselines.jsonl" value="../outputs/llm_baselines.jsonl">
+        <button class="btn btn-watch" id="watch-btn" onclick="toggleWatch()">Watch</button>
+      </div>
+      <select class="btn" id="sort-select">
+        <option value="reward-desc">Sort: Reward (high)</option>
+        <option value="reward-asc">Sort: Reward (low)</option>
+        <option value="fp-desc">Sort: FP (high)</option>
+        <option value="fp-asc">Sort: FP (low)</option>
+        <option value="ttfc-asc">Sort: TTFC (fast)</option>
+        <option value="ttfc-desc">Sort: TTFC (slow)</option>
+      </select>
+    </div>
+  </header>
+
+  <main>
+    <aside>
+      <div class="aside-header">
+        <h2>Episodes</h2>
+        <span id="episode-count" style="font-size: 12px; color: var(--text-muted);">0</span>
+      </div>
+      <div id="episode-list"></div>
+    </aside>
+
+    <div class="content">
+      <div class="timeline-header" id="timeline-header" style="display: none;">
+        <div class="timeline-title">
+          <h2 id="selected-scenario">-</h2>
+          <span class="model" id="selected-model">-</span>
+        </div>
+        <div class="timeline-summary">
+          <span>Steps: <strong id="summary-steps">-</strong></span>
+          <span>Reward: <strong id="summary-reward">-</strong></span>
+          <span>First Containment: <strong id="summary-ttfc">-</strong></span>
+          <span>Correct: <strong id="summary-correct" class="stat-correct">-</strong></span>
+          <span>False Pos: <strong id="summary-fp" class="stat-fp">-</strong></span>
+        </div>
+      </div>
+
+      <div id="timeline">
+        <div class="empty-state" id="empty-state">
+          <h3>Load trace data to begin</h3>
+          <p>Drag and drop a JSONL file containing evaluation traces, or click "Load File" to browse.</p>
+          <div class="drop-zone" id="drop-zone">
+            <p>Drop JSONL file here</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="score-breakdown" style="display: none;">
+        <div class="score-grid">
+          <div class="score-section">
+            <h3>Attribution</h3>
+            <div id="attribution-scores"></div>
+          </div>
+          <div class="score-section">
+            <h3>Containment</h3>
+            <div id="containment-scores"></div>
+          </div>
+          <div class="score-section">
+            <h3>Injection Safety</h3>
+            <div id="injection-scores"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const INVESTIGATION_ACTIONS = ['query_logs', 'fetch_email', 'fetch_alert'];
+    const CONTAINMENT_ACTIONS = ['isolate_host', 'block_domain', 'reset_user'];
+
+    const state = {
+      traces: [],
+      selectedEpisode: null,
+      sortBy: 'reward',
+      sortDir: 'desc'
+    };
+
+    function parseJSONL(text) {
+      return text.trim().split('\n').filter(Boolean).map(line => {
+        try { return JSON.parse(line); }
+        catch { return null; }
+      }).filter(Boolean);
+    }
+
+    function loadTraces(text) {
+      state.traces = parseJSONL(text);
+      state.selectedEpisode = null;
+      renderEpisodeList();
+      renderTimeline();
+      document.getElementById('episode-count').textContent = state.traces.length;
+    }
+
+    function getModelShort(model) {
+      if (!model) return '-';
+      if (model.includes('sonnet')) return 'Sonnet 4.5';
+      if (model.includes('gpt-5')) return 'GPT-5.2';
+      if (model.includes('gemini')) return 'Gemini 3';
+      if (model.includes('deepseek')) return 'DeepSeek';
+      return model.split('/').pop();
+    }
+
+    function calculateTTFC(steps) {
+      for (let i = 0; i < steps.length; i++) {
+        if (CONTAINMENT_ACTIONS.includes(steps[i].action?.action_type)) {
+          return i + 1;
+        }
+      }
+      return null;
+    }
+
+    function classifyAction(step, details) {
+      const type = step.action?.action_type;
+      if (!type) return 'unknown';
+      if (INVESTIGATION_ACTIONS.includes(type)) return 'investigation';
+      if (type === 'submit_report') return 'report';
+      if (CONTAINMENT_ACTIONS.includes(type)) {
+        const category = type === 'isolate_host' ? 'isolated_hosts' :
+                        type === 'block_domain' ? 'blocked_domains' : 'reset_users';
+        const target = step.action.params?.host_id || step.action.params?.domain || step.action.params?.user_id;
+        const fpList = details?.containment?.[category]?.false_positive || [];
+        if (fpList.includes(target)) return 'false_positive';
+        return 'correct';
+      }
+      return 'unknown';
+    }
+
+    function renderEpisodeList() {
+      const list = document.getElementById('episode-list');
+      const sorted = [...state.traces].sort((a, b) => {
+        let aVal, bVal;
+        if (state.sortBy === 'reward') {
+          aVal = a.reward || 0;
+          bVal = b.reward || 0;
+        } else if (state.sortBy === 'fp') {
+          aVal = a.containment_false_positive_total || 0;
+          bVal = b.containment_false_positive_total || 0;
+        } else if (state.sortBy === 'ttfc') {
+          aVal = calculateTTFC(a.steps || []) || 999;
+          bVal = calculateTTFC(b.steps || []) || 999;
+        }
+        return state.sortDir === 'desc' ? bVal - aVal : aVal - bVal;
+      });
+
+      list.innerHTML = sorted.map((trace, i) => {
+        const isSelected = state.selectedEpisode === trace;
+        const correct = trace.containment_correct_total || 0;
+        const fp = trace.containment_false_positive_total || 0;
+        return `
+          <div class="episode-item ${isSelected ? 'selected' : ''}" data-index="${state.traces.indexOf(trace)}">
+            <span class="episode-id">${trace.scenario_id || 'Unknown'}</span>
+            <div class="episode-stats">
+              <span class="stat-correct">${correct} correct</span>
+              <span class="stat-fp">${fp} FP</span>
+            </div>
+            <div class="episode-meta">${getModelShort(trace.model)} | ${(trace.reward || 0).toFixed(1)} pts</div>
+          </div>
+        `;
+      }).join('');
+
+      list.querySelectorAll('.episode-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const idx = parseInt(item.dataset.index);
+          state.selectedEpisode = state.traces[idx];
+          renderEpisodeList();
+          renderTimeline();
+        });
+      });
+    }
+
+    function renderTimeline() {
+      const timeline = document.getElementById('timeline');
+      const header = document.getElementById('timeline-header');
+      const breakdown = document.getElementById('score-breakdown');
+      const empty = document.getElementById('empty-state');
+
+      if (!state.selectedEpisode) {
+        header.style.display = 'none';
+        breakdown.style.display = 'none';
+        if (state.traces.length === 0) {
+          empty.style.display = 'flex';
+          timeline.innerHTML = '';
+          timeline.appendChild(empty);
+        } else {
+          empty.style.display = 'flex';
+          empty.querySelector('h3').textContent = 'Select an episode';
+          empty.querySelector('p').textContent = 'Click an episode from the list to view its timeline.';
+          empty.querySelector('.drop-zone').style.display = 'none';
+        }
+        return;
+      }
+
+      empty.style.display = 'none';
+      header.style.display = 'block';
+      breakdown.style.display = 'block';
+
+      const ep = state.selectedEpisode;
+      const ttfc = calculateTTFC(ep.steps || []);
+
+      document.getElementById('selected-scenario').textContent = ep.scenario_id || '-';
+      document.getElementById('selected-model').textContent = getModelShort(ep.model);
+      document.getElementById('summary-steps').textContent = ep.step_count || ep.steps?.length || '-';
+      document.getElementById('summary-reward').textContent = (ep.reward || 0).toFixed(2);
+      document.getElementById('summary-ttfc').textContent = ttfc ? `Step ${ttfc}` : 'None';
+      document.getElementById('summary-correct').textContent = ep.containment_correct_total || 0;
+      document.getElementById('summary-fp').textContent = ep.containment_false_positive_total || 0;
+
+      const steps = ep.steps || [];
+      timeline.innerHTML = steps.map((step, i) => {
+        const cls = classifyAction(step, ep.details);
+        const isFirstContainment = (i + 1) === ttfc;
+        const actionType = step.action?.action_type || 'unknown';
+        const params = step.action?.params || {};
+        const paramStr = Object.entries(params).map(([k, v]) =>
+          `${k}: ${typeof v === 'object' ? JSON.stringify(v) : v}`
+        ).join(', ');
+
+        const attacker = step.attacker_action;
+        const attackerStr = attacker ? `${attacker.action_type}(${Object.values(attacker.params || {}).join(', ')})` : null;
+
+        const badgeClass = {
+          investigation: 'badge-investigation',
+          correct: 'badge-correct',
+          false_positive: 'badge-fp',
+          injection: 'badge-injection',
+          report: 'badge-report'
+        }[cls] || '';
+
+        const badgeText = {
+          investigation: 'Investigation',
+          correct: 'Correct',
+          false_positive: 'False Positive',
+          injection: 'Injection',
+          report: 'Report'
+        }[cls] || cls;
+
+        const stepClass = cls === 'correct' ? 'step-containment' :
+                          cls === 'false_positive' ? 'step-fp' :
+                          cls === 'injection' ? 'step-injection' : '';
+
+        return `
+          <div class="step ${stepClass}">
+            <div class="step-num">${i + 1}</div>
+            <div class="step-content">
+              <div class="step-action">
+                <span>${actionType}</span>
+                <span class="badge ${badgeClass}">${badgeText}</span>
+                ${isFirstContainment ? '<span class="ttfc-marker" title="Time to First Containment - first containment action taken">1ST</span>' : ''}
+              </div>
+              ${paramStr ? `<div class="step-params" title="${paramStr.replace(/"/g, '&quot;')}">${paramStr}</div>` : ''}
+              ${attackerStr ? `<div class="step-attacker">${attackerStr}</div>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      renderScoreBreakdown();
+    }
+
+    function renderScoreBreakdown() {
+      const ep = state.selectedEpisode;
+      if (!ep) return;
+
+      const attr = ep.details?.attribution || {};
+      const attrFields = ['patient_zero_host', 'compromised_user', 'attacker_domain', 'data_target', 'initial_vector'];
+      document.getElementById('attribution-scores').innerHTML = attrFields.map(f => {
+        const ok = attr[f];
+        return `<div class="score-item">
+          <span class="${ok ? 'score-check' : 'score-x'}">${ok ? '&#10003;' : '&#10007;'}</span>
+          <span>${f.replace(/_/g, ' ')}</span>
+        </div>`;
+      }).join('');
+
+      const cont = ep.details?.containment || {};
+      const contHtml = [];
+      ['isolated_hosts', 'blocked_domains', 'reset_users'].forEach(cat => {
+        const data = cont[cat] || {};
+        const required = (data.required || []).length;
+        const correct = (data.correct || []).length;
+        const fp = (data.false_positive || []).length;
+        const missing = (data.missing || []).length;
+        if (required || fp) {
+          contHtml.push(`<div class="score-item"><strong>${cat.replace(/_/g, ' ')}:</strong></div>`);
+          if (correct) contHtml.push(`<div class="score-item"><span class="score-check">&#10003;</span> ${correct} correct</div>`);
+          if (missing) contHtml.push(`<div class="score-item"><span class="score-x">&#10007;</span> ${missing} missing</div>`);
+          if (fp) contHtml.push(`<div class="score-item"><span class="score-fp">!</span> ${fp} false positive</div>`);
+        }
+      });
+      document.getElementById('containment-scores').innerHTML = contHtml.join('') || '<div class="score-item" style="color: var(--text-muted)">No containment data</div>';
+
+      const inj = ep.details?.injection?.violations || [];
+      document.getElementById('injection-scores').innerHTML = inj.length
+        ? `<div class="score-item"><span class="score-fp">!</span> ${inj.length} violation(s)</div>`
+        : '<div class="score-item"><span class="score-check">&#10003;</span> No violations</div>';
+    }
+
+    // File handling
+    document.getElementById('file-input').addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = ev => loadTraces(ev.target.result);
+        reader.readAsText(file);
+      }
+    });
+
+    // Drag and drop
+    const dropZone = document.getElementById('drop-zone');
+    const body = document.body;
+
+    ['dragenter', 'dragover'].forEach(evt => {
+      body.addEventListener(evt, e => { e.preventDefault(); dropZone?.classList.add('drag-over'); });
+    });
+    ['dragleave', 'drop'].forEach(evt => {
+      body.addEventListener(evt, e => { e.preventDefault(); dropZone?.classList.remove('drag-over'); });
+    });
+    body.addEventListener('drop', e => {
+      const file = e.dataTransfer?.files[0];
+      if (file && file.name.endsWith('.jsonl')) {
+        const reader = new FileReader();
+        reader.onload = ev => loadTraces(ev.target.result);
+        reader.readAsText(file);
+      }
+    });
+
+    // Sort handling
+    document.getElementById('sort-select').addEventListener('change', e => {
+      const [by, dir] = e.target.value.split('-');
+      state.sortBy = by;
+      state.sortDir = dir;
+      renderEpisodeList();
+    });
+
+    // Live watch functionality
+    let watchInterval = null;
+    let lastTraceCount = 0;
+    let lastFileSize = 0;
+
+    function toggleWatch() {
+      const btn = document.getElementById('watch-btn');
+      const pathInput = document.getElementById('watch-path');
+
+      if (watchInterval) {
+        // Stop watching
+        clearInterval(watchInterval);
+        watchInterval = null;
+        btn.textContent = 'Watch';
+        btn.classList.remove('watching');
+        pathInput.disabled = false;
+      } else {
+        // Start watching
+        const filePath = pathInput.value.trim();
+        if (!filePath) {
+          alert('Enter a file path to watch');
+          return;
+        }
+
+        btn.textContent = 'Stop';
+        btn.classList.add('watching');
+        pathInput.disabled = true;
+        lastTraceCount = state.traces.length;
+
+        // Initial fetch
+        fetchAndUpdate(filePath);
+
+        // Poll every 2 seconds
+        watchInterval = setInterval(() => fetchAndUpdate(filePath), 2000);
+      }
+    }
+
+    async function fetchAndUpdate(filePath) {
+      try {
+        const response = await fetch(filePath, { cache: 'no-store' });
+        if (!response.ok) {
+          console.log(`Watch: File not found (${response.status})`);
+          return;
+        }
+
+        const text = await response.text();
+        const newSize = text.length;
+
+        // Only update if file has grown
+        if (newSize > lastFileSize) {
+          lastFileSize = newSize;
+          const previousSelected = state.selectedEpisode?.scenario_id;
+
+          loadTraces(text);
+
+          // Restore selection if it still exists
+          if (previousSelected) {
+            const found = state.traces.find(t => t.scenario_id === previousSelected);
+            if (found) {
+              state.selectedEpisode = found;
+              renderTimeline();
+            }
+          }
+
+          // Show notification if new traces arrived
+          const newCount = state.traces.length;
+          if (newCount > lastTraceCount) {
+            console.log(`Watch: ${newCount - lastTraceCount} new trace(s) loaded`);
+            lastTraceCount = newCount;
+          }
+        }
+      } catch (err) {
+        console.log('Watch: Fetch error -', err.message);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -70,6 +70,38 @@ Three of four models execute containment in 100% of episodes with 90-97% false p
 
 *Over-triggering models act within 7-8 steps, before gathering sufficient evidence. Sonnet 4.5 waits ~3 steps longer, resulting in significantly fewer false positives.*
 
+## Trace Playground
+
+Visualize evaluation traces step-by-step to understand *why* models over-trigger:
+
+```bash
+# Start local server (required for playground)
+python -m http.server 8080
+
+# Open in browser
+open http://localhost:8080/playground/index.html
+```
+
+**Load traces:** Drag any `outputs/*.jsonl` file onto the page, or use the **Watch** feature for live updates during evaluation runs.
+
+**Live watch:** Enter a file path (e.g., `../outputs/llm_baselines.jsonl`) and click **Watch**. The playground polls every 2 seconds and automatically loads new traces as they're written by `eval.py`.
+
+```bash
+# In one terminal: start server
+python -m http.server 8080
+
+# In another terminal: run evaluation
+python scripts/eval.py --limit 10 --output outputs/llm_baselines.jsonl
+
+# Watch the playground update in real-time as episodes complete
+```
+
+The timeline shows each defender action with classification badges (Investigation, Correct, False Positive) and highlights the first containment step.
+
+![Trace Playground](assets/playground-preview.png)
+
+*Episode timeline showing Sonnet 4.5 investigating for 11 steps before first containment (step 12). Step 13 shows a false positive block on billing.example.com.*
+
 ## Reproduce Paper Results
 
 ### Run Your Own Evaluation
