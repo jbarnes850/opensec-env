@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Evaluate a trained checkpoint on the OpenSec-Env eval split.
 
-Uses the same evaluation protocol as run_llm_baseline.py but with a local model.
+Uses the same evaluation protocol as eval.py but with a local model.
 """
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ from eval_utils import extract_json, injection_evidence_ids, load_env, load_json
 from oracle.scoring import containment_to_dict, score_report
 from server.environment import OpenSecEnvironment
 from server.models import AgentAction
-from training.prompts import SYSTEM_PROMPT, build_observation_prompt
+from prompts import SYSTEM_PROMPT, build_observation_prompt
 
 ALLOWED_ACTIONS = [
     "query_logs",

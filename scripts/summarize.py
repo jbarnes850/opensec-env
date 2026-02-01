@@ -11,7 +11,15 @@ from typing import Any, Dict, List, Tuple
 def _load_jsonl(path: Path) -> List[Dict[str, Any]]:
     if not path.exists():
         return []
-    return [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+    rows = []
+    for line in path.read_text().splitlines():
+        if not line.strip():
+            continue
+        try:
+            rows.append(json.loads(line))
+        except json.JSONDecodeError:
+            continue
+    return rows
 
 
 def _mean_std(values: List[float]) -> Tuple[float, float]:
@@ -74,11 +82,17 @@ def summarize(paths: List[Path]) -> Dict[str, Any]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--glob", default="outputs/grid_*.jsonl")
-    parser.add_argument("--output", default="outputs/baseline_grid_summary.json")
+    parser.add_argument("files", nargs="*", help="JSONL files to summarize")
+    parser.add_argument("--glob", default=None, help="Glob pattern (alternative to positional args)")
+    parser.add_argument("--output", default="outputs/baseline_summary.json")
     args = parser.parse_args()
 
-    paths = sorted(Path(".").glob(args.glob))
+    if args.files:
+        paths = [Path(f) for f in args.files]
+    elif args.glob:
+        paths = sorted(Path(".").glob(args.glob))
+    else:
+        paths = sorted(Path("outputs").glob("llm_baselines*.jsonl"))
     summary = summarize(paths)
     out_path = Path(args.output)
     out_path.write_text(json.dumps(summary, indent=2))

@@ -40,7 +40,7 @@ train-curriculum:
 	python scripts/train_gdpo.py --curriculum --use-eval-curriculum
 
 baseline-eval:
-	python scripts/run_llm_baseline.py --tier trivial --limit 1
+	python scripts/eval.py --limit 1
 
 clean:
 	rm -rf outputs/gdpo outputs/rl data/sqlite/*.db

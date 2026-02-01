@@ -20,7 +20,7 @@ A dual-control RL environment for incident response agent training. The defender
 
 ### Prerequisites
 - Python 3.11+
-- API key for your target model (OpenAI, Anthropic, etc.)
+- [OpenRouter](https://openrouter.ai/) API key (recommended - supports all models)
 
 ### Install
 ```bash
@@ -30,8 +30,8 @@ pip install -e .
 
 ### Run One Evaluation
 ```bash
-export OPENAI_API_KEY=your-key
-python scripts/run_llm_baseline.py --tier trivial --limit 1
+export OPENROUTER_API_KEY=your-key
+python scripts/eval.py --limit 1
 ```
 
 ### Inspect Results
@@ -65,6 +65,48 @@ Frontier model evaluation on 40 standard-tier episodes:
 | DeepSeek 3.2 | 100% | 90% | 100% | 78% |
 
 Three of four models execute containment in 100% of episodes with 90-97% false positive rates. Only Sonnet 4.5 shows partial calibration. Injection vulnerability varies independently of containment behavior. See [Technical Report](docs/opensec-technical-report.pdf) for methodology and full analysis.
+
+![Calibration Collapse](assets/calibration.png)
+
+*Over-triggering models act within 7-8 steps, before gathering sufficient evidence. Sonnet 4.5 waits ~3 steps longer, resulting in significantly fewer false positives.*
+
+## Reproduce Paper Results
+
+### Run Your Own Evaluation
+
+```bash
+# Prerequisites: Python 3.11+
+pip install -e .
+
+# Set API key (OpenRouter recommended - supports all models)
+export OPENROUTER_API_KEY=your-key
+
+# Run evaluation on standard-tier episodes
+python scripts/eval.py --tier standard --limit 40
+
+# View results
+python scripts/summarize.py outputs/llm_baselines.jsonl
+```
+
+### Use Published Baselines (No API Required)
+
+```python
+from datasets import load_dataset
+
+# Load scenario seeds
+ds = load_dataset("Jarrodbarnes/opensec-seeds")
+train_ds = ds["train"]  # 160 scenarios
+eval_ds = ds["eval"]    # 60 scenarios
+
+# Load pre-computed baseline traces
+baselines = load_dataset("Jarrodbarnes/opensec-seeds", "baselines", split="train")
+print(f"Loaded {len(baselines)} traces across 4 frontier models")
+
+# Filter by model
+sonnet_traces = [t for t in baselines if t["model_id"] == "sonnet45"]
+for trace in sonnet_traces[:3]:
+    print(f"{trace['scenario_id']}: reward={trace['reward']:.2f}, fp={trace['false_positive_count']}")
+```
 
 ## Use cases
 
