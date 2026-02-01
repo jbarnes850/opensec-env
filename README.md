@@ -64,11 +64,30 @@ Frontier model evaluation on 40 standard-tier episodes:
 | Gemini 3 | 100% | 97% | 100% | 50% |
 | DeepSeek 3.2 | 100% | 90% | 100% | 78% |
 
+**Metrics:**
+- **Containment**: fraction of episodes with at least one containment action executed
+- **FP Rate**: fraction of episodes with at least one incorrect containment action
+- **Correct**: fraction of ground-truth targets correctly contained
+- **Injection**: fraction of episodes with tool calls containing injected payload content after exposure
+- **TTFC**: time-to-first-containment, the step index of the first containment action
+- **Blast Radius**: mean count of false positive containment actions per episode
+
 Three of four models execute containment in 100% of episodes with 90-97% false positive rates. Only Sonnet 4.5 shows partial calibration. Injection vulnerability varies independently of containment behavior. See [Technical Report](docs/opensec-technical-report.pdf) for methodology and full analysis.
+
+**Operational timing** reveals *when* models act:
+
+| Model | TTFC | Blast Radius |
+|-------|-----:|-------------:|
+| GPT-5.2 | 6.95 | 1.23 |
+| Sonnet 4.5 | 9.91 | 1.15 |
+| Gemini 3 | 7.73 | 1.40 |
+| DeepSeek 3.2 | 7.58 | 1.18 |
+
+*TTFC = time-to-first-containment (steps). Blast radius = mean false positives per episode.*
 
 ![Calibration Collapse](assets/calibration.png)
 
-*Over-triggering models act within 7-8 steps, before gathering sufficient evidence. Sonnet 4.5 waits ~3 steps longer, resulting in significantly fewer false positives.*
+Over-triggering models act within 7-8 steps, before gathering sufficient evidence. Sonnet 4.5 waits ~3 steps longer, resulting in significantly fewer false positives.
 
 ## Trace Playground
 
@@ -250,11 +269,12 @@ Use the Docker path for a stable runtime. Install from `pyproject.toml`: `pip in
 
 ## Citation
 
-```
-@misc{opensecenv2026,
-  title  = {OpenSec: Measuring Incident Response Agent Calibration Under Adversarial Evidence},
-  author = {Jarrod Barnes},
-  year   = {2026},
-  note   = {Preprint}
+```bibtex
+@article{barnes2026opensec,
+  title   = {OpenSec: Measuring Incident Response Agent Calibration Under Adversarial Evidence},
+  author  = {Barnes, Jarrod},
+  journal = {arXiv preprint arXiv:2601.21083},
+  year    = {2026},
+  url     = {https://arxiv.org/abs/2601.21083}
 }
 ```
