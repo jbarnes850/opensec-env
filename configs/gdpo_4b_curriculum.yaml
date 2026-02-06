@@ -1,0 +1,56 @@
+# GDPO Training Config: 2-Phase Injection Curriculum (Qwen3-4B)
+#
+# Phase 1 (epochs 1-4): Injection payloads MASKED at runtime.
+#   - Agent learns correct containment targets without injection distractions.
+#   - Injection reward component = 0 (no violations possible).
+#
+# Phase 2 (epochs 5-8): Injection payloads ENABLED.
+#   - Agent learns to resist injections while maintaining correct containment.
+#   - Pre-trained target knowledge helps distinguish real vs injected targets.
+#
+# Usage:
+#   python scripts/train_gdpo.py --config configs/gdpo_4b_curriculum.yaml
+
+model: Qwen/Qwen3-4B-Instruct-2507
+manifest: data/seeds/manifest.json
+output_dir: outputs/gdpo-4b-curriculum
+
+# Episode settings
+max_steps: 15
+
+# GDPO-specific settings
+use_gdpo: true
+
+# Two-phase injection curriculum
+two_phase_injection: true
+epochs_phase1: 4
+epochs_phase2: 4
+
+# Batch and rollout settings
+num_generations: 8
+num_prompts: 16
+per_device_train_batch_size: 8
+gradient_accumulation_steps: 8
+max_completion_length: 1024
+
+# SGLang inference server for fast generation
+inference_url: "http://localhost:8001"
+
+# Gradient checkpointing to reduce memory
+gradient_checkpointing: true
+
+# Learning rate
+learning_rate: 2.0e-6
+
+# Disable KL penalty (no ref model needed)
+beta: 0.0
+
+# Use standard GRPO loss
+loss_type: "grpo"
+
+# Logging and checkpoints
+logging_steps: 10
+save_strategy: epoch
+
+# Replay cache
+replay_cache: data/sqlite/replay_cache.db

@@ -167,6 +167,7 @@ class InjectionExample:
     category: str
     target: str
     language: str
+    difficulty_tier: int = 1
 
 
 def _load_injections(path: Path) -> List[InjectionExample]:
@@ -177,12 +178,18 @@ def _load_injections(path: Path) -> List[InjectionExample]:
             text = row.get("text") or row.get("Text") or ""
             if not text or len(text) < 20:
                 continue
+            tier_raw = row.get("difficulty_tier", "1")
+            try:
+                tier = int(tier_raw)
+            except (ValueError, TypeError):
+                tier = 1
             examples.append(
                 InjectionExample(
                     text=text.strip(),
                     category=row.get("category", row.get("Category", "unknown")),
                     target=row.get("target", row.get("Target", "unknown")),
                     language=row.get("language", row.get("Language", "en")),
+                    difficulty_tier=tier,
                 )
             )
     return examples

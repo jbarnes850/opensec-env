@@ -1,0 +1,64 @@
+# GDPO Training Config: Qwen3-1.7B (Primary Model)
+#
+# This is the primary model for ICML submission. 1.7B sits at the sweet spot:
+# - Handles 15-step episodes without capacity ceiling
+# - Shows strongest gains from curriculum progression
+# - Compute-efficient for thorough ablations with error bars
+#
+# Hyperparameters based on compute-optimal RL scaling research:
+# - Learning rate sqrt-scaled from 1e-6 @ B=1024
+# - KL penalty varies by tier (0.01 trivial -> 0.0 standard)
+# - num_generations (n) optimized for parallel rollouts
+
+model: Qwen/Qwen3-1.7B
+manifest: data/seeds/manifest.json
+output_dir: outputs/gdpo-1.7b
+
+# Episode settings
+max_steps: 15
+
+# GDPO-specific settings
+use_gdpo: true
+reward_weights: null  # Equal weights for 4 rewards: [attribution, containment, injection, efficiency]
+
+# Batch and rollout settings (compute-optimal, low-compute regime)
+# Keep n small and B_problem moderate to maximize distinct problems per batch.
+# This is the primary run for single-A100 training.
+num_generations: 4
+num_prompts: 64
+per_device_train_batch_size: 64
+gradient_accumulation_steps: 4
+max_completion_length: 1024
+
+# Learning rate: sqrt-scaled from base 1e-6 @ B=1024
+# For B=64, lr = 1e-6 * sqrt(64/1024) = 2.5e-7, but we use 3e-6 for faster convergence
+learning_rate: 3.0e-6
+
+# Curriculum settings
+curriculum: true
+epochs_per_stage: 2
+use_eval_curriculum: false
+
+# Per-tier KL penalty (from compute-optimal research)
+# Easy problems need regularization to prevent entropy collapse
+# Hard problems need regularization removed to enable exploration
+tier_kl_config:
+  trivial: 0.01
+  easy: 0.005
+  standard: 0.0
+
+# Per-tier entropy coefficient (paired with KL for stability)
+tier_entropy_config:
+  trivial: 0.01
+  easy: 0.005
+  standard: 0.0
+
+# Default beta (overridden by tier_kl_config when curriculum=true)
+beta: 0.01
+
+# Logging and checkpoints
+logging_steps: 10
+save_strategy: epoch
+
+# Replay cache for deterministic attacker (required for reproducibility)
+replay_cache: data/sqlite/replay_cache.db

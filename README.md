@@ -12,7 +12,7 @@
 
 A dual-control RL environment for incident response agent training. The defender investigates evidence from SQLite logs and executes containment actions while a live attacker advances a kill chain. Outcomes are scored by a deterministic oracle: attribution, executed containment, exposure-gated injection violations, and efficiency. The attacker is an LLM policy with limited autonomy inside a state machine; it is stochastic by default and can be replay-cached for low-variance evaluation.
 
-**Contribution.** Frontier LLMs (GPT-5.2, Sonnet 4.5, Gemini 3, DeepSeek v3.2) execute containment in 85-100% of episodes but with 90-97% false positive rates. High rewards mask operational failure: models achieve near-perfect correct containment by exhausting the action space. Only Sonnet 4.5 shows partial calibration (85% containment, 72% FP). The environment makes this action-calibration gap measurable. See [Technical Report](docs/opensec-technical-report.pdf) for full results.
+**Contribution.** Frontier LLMs (GPT-5.2, Sonnet 4.5, Gemini 3 Flash, DeepSeek v3.2) execute containment in 62.5-100% of episodes with 45-82.5% false positive rates. All models correctly identify the ground-truth threat when they act; the calibration gap is not in detection but in restraint. GPT-5.2 acts at step 4 with 82.5% FP rate (uncalibrated). Only Sonnet 4.5 shows partial calibration (62.5% containment, 45% FP, TTFC of 10.6). The environment makes this action-calibration gap measurable. See [Technical Report](docs/opensec-technical-report.pdf) for full results.
 
 ![OpenSec Architecture](assets/opensec-design.jpeg)
 
@@ -55,39 +55,28 @@ Defender tools:
 
 ## Key results
 
-Frontier model evaluation on 40 standard-tier episodes:
+Frontier model evaluation on 40 standard-tier episodes each:
 
-| Model | Containment | FP Rate | Correct | Injection |
-|-------|------------:|--------:|--------:|----------:|
-| GPT-5.2 | 100% | 97% | 97% | 38% |
-| Sonnet 4.5 | 85% | 72% | 85% | 40% |
-| Gemini 3 | 100% | 97% | 100% | 50% |
-| DeepSeek 3.2 | 100% | 90% | 100% | 78% |
+| Model | Containment | FP Rate | EGAR | TTFC | Blast Radius | Threshold |
+|-------|------------:|--------:|-----:|-----:|-------------:|-----------|
+| GPT-5.2 | 100% | 82.5% | 37.5% | 4.1 | 0.43 | Uncalibrated |
+| Sonnet 4.5 | 62.5% | 45.0% | 39.2% | 10.6 | 0.44 | Partially Calibrated |
+| Gemini 3 Flash | 75.0% | 57.5% | 42.9% | 8.6 | 0.44 | Partially Calibrated |
+| DeepSeek v3.2 | 92.5% | 65.0% | 54.2% | 9.0 | 0.42 | Partially Calibrated |
 
 **Metrics:**
 - **Containment**: fraction of episodes with at least one containment action executed
 - **FP Rate**: fraction of episodes with at least one incorrect containment action
-- **Correct**: fraction of ground-truth targets correctly contained
-- **Injection**: fraction of episodes with tool calls containing injected payload content after exposure
-- **TTFC**: time-to-first-containment, the step index of the first containment action
-- **Blast Radius**: mean count of false positive containment actions per episode
+- **EGAR**: Evidence-Gated Action Rate -- fraction of containment actions preceded by trusted evidence about the target entity
+- **TTFC**: time-to-first-containment, the step index of the first containment action (higher = more investigation)
+- **Blast Radius**: ratio of false positive to correct containment actions per episode
+- **Threshold**: defensive capability classification (provisional, calibrated against frontier model behavior)
 
-Three of four models execute containment in 100% of episodes with 90-97% false positive rates. Only Sonnet 4.5 shows partial calibration. Injection vulnerability varies independently of containment behavior. See [Technical Report](docs/opensec-technical-report.pdf) for methodology and full analysis.
-
-**Operational timing** reveals *when* models act:
-
-| Model | TTFC | Blast Radius |
-|-------|-----:|-------------:|
-| GPT-5.2 | 6.95 | 1.23 |
-| Sonnet 4.5 | 9.91 | 1.15 |
-| Gemini 3 | 7.73 | 1.40 |
-| DeepSeek 3.2 | 7.58 | 1.18 |
-
-*TTFC = time-to-first-containment (steps). Blast radius = mean false positives per episode.*
+GPT-5.2 is the only model classified as uncalibrated, acting at step 4 with 82.5% false positive rate. Sonnet 4.5 shows the strongest calibration with TTFC of 10.6 (investigates 70% of the episode before acting). All models correctly identify the ground-truth threat when they act; the calibration gap is not in detection but in restraint. See [Technical Report](docs/opensec-technical-report.pdf) for methodology and full analysis.
 
 ![Calibration Collapse](assets/calibration.png)
 
-Over-triggering models act within 7-8 steps, before gathering sufficient evidence. Sonnet 4.5 waits ~3 steps longer, resulting in significantly fewer false positives.
+GPT-5.2 acts at step 4, before gathering sufficient evidence. Sonnet 4.5 waits until step 10.6, resulting in significantly fewer false positives.
 
 ## Trace Playground
 
