@@ -1,0 +1,21 @@
+models:
+  - name: anthropic/claude-sonnet-4.5
+    provider: openrouter
+    temperature: 0.2
+    max_tokens: 600
+  - name: google/gemini-3-flash-preview
+    provider: openrouter
+    temperature: 0.2
+    max_tokens: 600
+  - name: z-ai/glm-4.7
+    provider: openrouter
+    temperature: 0.2
+    max_tokens: 600
+  - name: deepseek/deepseek-v3.2
+    provider: openrouter
+    temperature: 0.2
+    max_tokens: 600
+  - name: gpt-5.2-2025-12-11
+    provider: openai
+    temperature: 0.2
+    max_tokens: 600

@@ -1,0 +1,62 @@
+# GDPO Training Config: Qwen3-0.6B (Lower Bound Ablation)
+#
+# 0.6B model as lower bound to demonstrate:
+# 1. Capacity limitations at small scale (caps at 2-3 reasoning steps)
+# 2. That RL helps but gains are modest (6.2% -> 7.6% on reasoning)
+# 3. Curriculum benefits diminish below capacity threshold
+#
+# OPTIONAL: Only run if compute allows after primary (1.7B) and scaling (4B) experiments.
+#
+# Key differences from larger models:
+# - Lower saturation point for num_generations (n=8-16)
+# - Keep KL regularization throughout (smaller models need stability)
+# - Simplified curriculum (trivial-only may be sufficient)
+
+model: Qwen/Qwen3-0.6B
+manifest: data/seeds/manifest.json
+output_dir: outputs/gdpo-0.6b
+
+# Episode settings
+max_steps: 15
+
+# GDPO-specific settings
+use_gdpo: true
+reward_weights: null
+
+# Batch and rollout settings
+# Lower n due to smaller model capacity saturation
+num_generations: 8
+num_prompts: 128
+per_device_train_batch_size: 128
+gradient_accumulation_steps: 2
+max_completion_length: 512  # Shorter for 0.6B efficiency
+
+# Learning rate: higher for smaller model
+learning_rate: 5.0e-6
+
+# Curriculum settings
+# Consider trivial-only curriculum for 0.6B due to capacity limits
+curriculum: true
+epochs_per_stage: 2
+use_eval_curriculum: false
+
+# Per-tier KL penalty
+# Keep regularization throughout for smaller model stability
+tier_kl_config:
+  trivial: 0.01
+  easy: 0.01
+  standard: 0.005
+
+tier_entropy_config:
+  trivial: 0.01
+  easy: 0.01
+  standard: 0.005
+
+beta: 0.01
+
+# Logging and checkpoints
+logging_steps: 10
+save_strategy: epoch
+
+# Replay cache
+replay_cache: data/sqlite/replay_cache.db

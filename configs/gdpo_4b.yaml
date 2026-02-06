@@ -1,0 +1,65 @@
+# GDPO Training Config: Qwen3-4B-Instruct (Fresh Start)
+#
+# Restart from base model after policy collapse from checkpoint training.
+# Temperature 0.7 for generation (set in train_gdpo.py).
+
+model: Qwen/Qwen3-4B-Instruct-2507
+manifest: data/seeds/manifest.json
+output_dir: outputs/gdpo-4b-fresh
+
+# Episode settings
+max_steps: 15
+
+# GDPO-specific settings
+use_gdpo: true
+reward_weights: null
+
+# Batch and rollout settings
+# Reduced for memory sharing with SGLang inference servers
+num_generations: 8
+num_prompts: 16
+per_device_train_batch_size: 8
+gradient_accumulation_steps: 8
+max_completion_length: 1024
+
+# SGLang inference server for fast generation
+inference_url: "http://localhost:8001"
+
+# Epoch-level on-policy: reload SGLang weights after each epoch
+policy_reload_cmd: scripts/reload_sglang.sh
+
+# Gradient checkpointing to reduce memory (critical with 2 inference servers)
+gradient_checkpointing: true
+
+# Learning rate: slightly lower than 1.7B for stability at scale
+learning_rate: 2.0e-6
+
+# Curriculum settings - 6 epochs total
+curriculum: true
+epochs_per_stage: 6
+use_eval_curriculum: false
+
+# Per-tier KL penalty
+tier_kl_config:
+  trivial: 0.01
+  easy: 0.005
+  standard: 0.0
+
+tier_entropy_config:
+  trivial: 0.01
+  easy: 0.005
+  standard: 0.0
+
+# Disable KL penalty (no ref model needed, saves GPU memory)
+# GDPO's per-reward normalization provides sufficient regularization
+beta: 0.0
+
+# Use standard GRPO loss (avoids num_items_in_batch requirement of DAPO)
+loss_type: "grpo"
+
+# Logging and checkpoints
+logging_steps: 10
+save_strategy: epoch
+
+# Replay cache
+replay_cache: data/sqlite/replay_cache.db

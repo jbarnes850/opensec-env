@@ -16,6 +16,16 @@ __pycache__/
 *.skill
 outputs/
 wandb/
+hf_upload_staging/
+tmp/
+.playwright-mcp/
+paper/**/*.aux
+paper/**/*.bbl
+paper/**/*.blg
+paper/**/*.log
+paper/**/*.out
+paper/*.tar
+paper/*.tar.gz
 data/sqlite/
 data/seeds/train/
 data/seeds/eval/
