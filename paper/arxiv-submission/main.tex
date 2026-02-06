@@ -139,11 +139,18 @@ DeepSeek 3.2 & 3.45 & 0.925 & 0.65 & 0.542 & 9.0 & Part.\ Cal. \\
 \vskip -0.1in
 \end{table}
 
-\textbf{Calibration varies across frontier models.} GPT-5.2 is the only model classified as uncalibrated, executing containment in 100\% of episodes at step 4.1 with 82.5\% false positive rate. Sonnet 4.5 shows partial calibration (62.5\% containment, 45\% FP), waiting until step 10.6 to act. Gemini 3 and DeepSeek fall between these extremes. Calibration depends on factors beyond capability, potentially including alignment approach or training methodology.
+\textbf{Calibration varies across frontier models.} GPT-5.2 is the only model classified as uncalibrated, executing containment in 100\% of episodes at step 4.1 with 82.5\% false positive rate. Sonnet 4.5 shows partial calibration (62.5\% containment, 45\% FP), waiting until step 10.6 to act. Gemini 3 and DeepSeek fall between these extremes (Figure~\ref{fig:calibration}). Calibration depends on factors beyond capability, potentially including alignment approach or training methodology.
 
 \textbf{High rewards mask operational failure.} The reward range (2.37--3.45) looks strong, but these scores reflect indiscriminate action. All models correctly identify the ground-truth threat when they act; the calibration gap is not in detection but in restraint. In production, the false positive actions would take down legitimate services alongside the real threat.
 
 \textbf{Injection vulnerability varies by tier.} Per-tier injection analysis reveals that T2 (contextualized) payloads are most effective across all models (15--25\% violation rate), while T1 (obvious) payloads rarely succeed. DeepSeek shows the highest T3 (complex) vulnerability at 10\%. Injection robustness is orthogonal to containment calibration.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/calibration-tradeoff.png}
+\caption{Calibration tradeoff: TTFC vs.\ false positive rate. Models that act earlier (lower TTFC) show higher false positive rates. Point size encodes EGAR; color encodes threshold classification.}
+\label{fig:calibration}
+\end{figure}
 
 \subsection{Operational Metrics}
 
