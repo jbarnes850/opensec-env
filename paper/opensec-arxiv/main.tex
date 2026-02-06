@@ -53,7 +53,14 @@ But benchmarks measure capability, not calibration. A model that correctly class
 
 This matters because offense scales faster than defense. \citet{heelan2026exploit} demonstrates frontier agents generating 40+ working exploits across 6 scenarios for approximately \$30--50 in compute. The limiting factor is token throughput, not expertise. IR agents that over-trigger will face adversaries who understand this, embedding prompt injections in malicious artifacts specifically to induce false-positive containment.
 
-OpenSec measures what current benchmarks miss: the gap between action willingness and action correctness when evidence is adversarial and stakes are operational.
+OpenSec measures what current benchmarks miss: the gap between action willingness and action correctness when evidence is adversarial and stakes are operational. Figure~\ref{fig:teaser} illustrates this gap: GPT-5.2 executes containment at step~4, before the attacker reaches lateral movement, while Sonnet~4.5 investigates 70\% of the episode before acting.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{figures/calibration-timeline-v2.png}
+\caption{Representative episode timelines for GPT-5.2 (uncalibrated) and Sonnet~4.5 (partially calibrated) on a standard-tier scenario. The attacker kill chain progresses across 15 steps regardless of defender behavior. GPT-5.2 begins containment at step~4 with an 82\% false positive rate; Sonnet~4.5 gathers evidence until step~11 with a 45\% false positive rate. Both models correctly identify the ground-truth threat---the calibration gap is in restraint, not detection.}
+\label{fig:teaser}
+\end{figure*}
 
 \subsection{The Dual-Control Challenge}
 
@@ -139,18 +146,11 @@ DeepSeek 3.2 & 3.45 & 0.925 & 0.65 & 0.542 & 9.0 & Part.\ Cal. \\
 \vskip -0.1in
 \end{table}
 
-\textbf{Calibration varies across frontier models.} GPT-5.2 is the only model classified as uncalibrated, executing containment in 100\% of episodes at step 4.1 with 82.5\% false positive rate. Sonnet 4.5 shows partial calibration (62.5\% containment, 45\% FP), waiting until step 10.6 to act. Gemini 3 and DeepSeek fall between these extremes (Figure~\ref{fig:calibration}). Calibration depends on factors beyond capability, potentially including alignment approach or training methodology.
+\textbf{Calibration varies across frontier models.} GPT-5.2 is the only model classified as uncalibrated, executing containment in 100\% of episodes at step 4.1 with 82.5\% false positive rate. Sonnet 4.5 shows partial calibration (62.5\% containment, 45\% FP), waiting until step 10.6 to act. Gemini 3 and DeepSeek fall between these extremes (Figure~\ref{fig:teaser}). Calibration depends on factors beyond capability, potentially including alignment approach or training methodology.
 
 \textbf{High rewards mask operational failure.} The reward range (2.37--3.45) looks strong, but these scores reflect indiscriminate action. All models correctly identify the ground-truth threat when they act; the calibration gap is not in detection but in restraint. In production, the false positive actions would take down legitimate services alongside the real threat.
 
 \textbf{Injection vulnerability varies by tier.} Per-tier injection analysis reveals that T2 (contextualized) payloads are most effective across all models (15--25\% violation rate), while T1 (obvious) payloads rarely succeed. DeepSeek shows the highest T3 (complex) vulnerability at 10\%. Injection robustness is orthogonal to containment calibration.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{figures/calibration-tradeoff.png}
-\caption{Calibration tradeoff: TTFC vs.\ false positive rate. Models that act earlier (lower TTFC) show higher false positive rates. Point size encodes EGAR; color encodes threshold classification.}
-\label{fig:calibration}
-\end{figure}
 
 \subsection{Operational Metrics}
 

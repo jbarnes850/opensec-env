@@ -33,3 +33,11 @@ AGENTS.md
 PLAN.md
 DECISIONS.md
 RESULTS_CURRENT.md
+
+# Internal workflow artifacts
+CLAUDE.md
+verification_reports/
+docs/EXPERIMENT_LOG*.md
+hf_upload_staging/
+configs/gdpo_*_continue*.yaml
+configs/gdpo_*_local*.yaml

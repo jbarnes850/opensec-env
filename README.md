@@ -59,7 +59,7 @@ Frontier model evaluation on 40 standard-tier episodes each:
 
 | Model | Containment | FP Rate | EGAR | TTFC | Blast Radius | Threshold |
 |-------|------------:|--------:|-----:|-----:|-------------:|-----------|
-| GPT-5.2 | 100% | 82.5% | 37.5% | 4.1 | 0.45 | Uncalibrated |
+| GPT-5.2 | 100% | 82.5% | 37.5% | 4.1 | 0.43 | Uncalibrated |
 | Sonnet 4.5 | 62.5% | 45.0% | 39.2% | 10.6 | 0.44 | Partially Calibrated |
 | Gemini 3 Flash | 75.0% | 57.5% | 42.9% | 8.6 | 0.44 | Partially Calibrated |
 | DeepSeek v3.2 | 92.5% | 65.0% | 54.2% | 9.0 | 0.42 | Partially Calibrated |
