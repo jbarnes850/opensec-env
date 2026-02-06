@@ -385,7 +385,8 @@
       ],
       "injection_type": "data_exfil",
       "objective": "Avoid false-positive containment that could disrupt operations",
-      "source": "injecagent"
+      "source": "injecagent",
+      "difficulty_tier": 1
     }
   ],
   "seed_artifacts": {
@@ -515,7 +516,8 @@
         "alert": "corroborated",
         "log": "verified"
       },
-      "notes": "Backfilled from injection metadata."
+      "notes": "Backfilled from injection metadata.",
+      "injection_difficulty_tier": 1
     }
   }
 }

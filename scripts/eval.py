@@ -13,10 +13,16 @@ import yaml
 from openai import OpenAI, BadRequestError
 
 from eval_utils import extract_json, injection_evidence_ids, load_env, load_json
+from oracle.calibration import (
+    EvidenceExtraction,
+    collect_known_entities,
+    compute_evidence_gating,
+    extract_entities_from_evidence,
+)
 from oracle.scoring import containment_to_dict, score_report
 from server.environment import OpenSecEnvironment
 from server.models import AgentAction
-from prompts import SYSTEM_PROMPT, build_observation_prompt
+from sim.defender_prompt import build_system_prompt, build_user_prompt
 
 ALLOWED_ACTIONS = [
     "query_logs",
@@ -130,22 +136,29 @@ def run_episode(seed_path: Path, model_cfg: Dict[str, Any], max_steps: int) -> D
     reset_result = env.reset()
     observation = reset_result.observation.model_dump()
 
+    # Use per-seed max_steps if available (P2.1 fix)
+    episode_max_steps = env.max_steps if env.max_steps is not None else max_steps
+
+    # Collect known entities for EGAR evidence tracking
+    known_entities = collect_known_entities(env.scenario) if env.scenario else set()
+
     messages: List[Dict[str, str]] = [
-        {"role": "system", "content": SYSTEM_PROMPT.format(max_steps=max_steps)}
+        {"role": "system", "content": build_system_prompt(max_steps=episode_max_steps)}
     ]
-    messages.append({"role": "user", "content": build_observation_prompt(observation)})
+    messages.append({"role": "user", "content": build_user_prompt(observation, max_steps=episode_max_steps)})
 
     steps: List[Dict[str, Any]] = []
+    evidence_per_step: List[EvidenceExtraction] = []
     report: Dict[str, Any] | None = None
     submitted_report = False
 
-    for _ in range(max_steps):
+    for _ in range(episode_max_steps):
         model_text, model_action = _invoke_model(model_cfg, messages)
         action = _normalize_action(model_action)
         result = env.step(action)
         observation = result.observation.model_dump()
         messages.append({"role": "assistant", "content": model_text})
-        messages.append({"role": "user", "content": build_observation_prompt(observation)})
+        messages.append({"role": "user", "content": build_user_prompt(observation, max_steps=episode_max_steps)})
 
         steps.append(
             {
@@ -155,6 +168,15 @@ def run_episode(seed_path: Path, model_cfg: Dict[str, Any], max_steps: int) -> D
             }
         )
 
+        # Extract entities from observation data for EGAR
+        obs_data = observation.get("last_action_result", {})
+        action_data = obs_data.get("data", {})
+        if action_data and known_entities:
+            evidence = extract_entities_from_evidence(action_data, known_entities)
+        else:
+            evidence = EvidenceExtraction(entities=set(), trusted_entities=set())
+        evidence_per_step.append(evidence)
+
         if action.action_type == "submit_report":
             report = action.params.get("summary_json")
             submitted_report = True
@@ -163,6 +185,13 @@ def run_episode(seed_path: Path, model_cfg: Dict[str, Any], max_steps: int) -> D
     if report is None:
         report = _default_report()
         result = env.step(AgentAction(action_type="submit_report", params={"summary_json": report}))
+
+    # Compute EGAR calibration metrics
+    step_actions = [
+        {"action_type": s["action"]["action_type"], "params": s["action"]["params"]}
+        for s in steps
+    ]
+    calibration = compute_evidence_gating(step_actions, evidence_per_step)
 
     injection_evidence = injection_evidence_ids(env.scenario)
     injection_encountered = injection_evidence.intersection(env.content_evidence_ids)
@@ -177,6 +206,16 @@ def run_episode(seed_path: Path, model_cfg: Dict[str, Any], max_steps: int) -> D
 
     executed_containment = containment_to_dict(env.containment)
 
+    # Per-tier injection violation counts
+    all_violation_ids: set = set()
+    for step in steps:
+        all_violation_ids.update(step.get("injection_violations", []))
+    payloads = (env.scenario or {}).get("prompt_injection_payloads", [])
+    tier_lookup = {p["injection_id"]: p.get("difficulty_tier", 2) for p in payloads}
+    inj_by_tier = {1: 0, 2: 0, 3: 0}
+    for vid in all_violation_ids:
+        inj_by_tier[tier_lookup.get(vid, 2)] += 1
+
     return {
         "scenario_id": env.scenario_id,
         "seed_path": str(seed_path),
@@ -186,6 +225,10 @@ def run_episode(seed_path: Path, model_cfg: Dict[str, Any], max_steps: int) -> D
         "submitted_report": submitted_report,
         "steps": steps,
         "injection_violations": result.info.get("injection_violations", []),
+        "evidence_gated_action_rate": calibration.evidence_gated_action_rate,
+        "time_to_first_containment": calibration.time_to_first_containment,
+        "evidence_gated_actions": calibration.evidence_gated_actions,
+        "total_containment_actions": calibration.total_containment_actions,
         "diagnostics": {
             "evidence_seen_count": len(env.seen_evidence_ids),
             "evidence_content_count": len(env.content_evidence_ids),
@@ -194,6 +237,9 @@ def run_episode(seed_path: Path, model_cfg: Dict[str, Any], max_steps: int) -> D
             "containment_attempted": containment_attempted,
             "report_submitted": submitted_report,
         },
+        "inj_tier1_violations": inj_by_tier[1],
+        "inj_tier2_violations": inj_by_tier[2],
+        "inj_tier3_violations": inj_by_tier[3],
         "attacker_config": {
             "model": attacker_model,
             "temperature": attacker_temp,
@@ -209,6 +255,7 @@ def main() -> int:
     parser.add_argument("--split", default="eval", choices=["train", "eval"])
     parser.add_argument("--tier", default=None, choices=["trivial", "easy", "standard"])
     parser.add_argument("--models", default="", help="Comma-separated model names to run (subset)")
+    parser.add_argument("--skip", type=int, default=0, help="Skip first N seeds (for batching)")
     parser.add_argument("--limit", type=int, default=10)
     parser.add_argument("--max-steps", type=int, default=15)
     parser.add_argument("--output", default="outputs/llm_baselines.jsonl")
@@ -228,6 +275,8 @@ def main() -> int:
     if args.tier:
         seeds = [entry for entry in seeds if entry.get("tier") == args.tier]
     seeds = [Path(entry["seed_path"]) for entry in seeds]
+    if args.skip:
+        seeds = seeds[args.skip:]
     if args.limit:
         seeds = seeds[: args.limit]
 
@@ -282,6 +331,13 @@ def main() -> int:
                     "diagnostics": result["diagnostics"],
                     "containment_correct_total": correct_total,
                     "containment_false_positive_total": false_total,
+                    "evidence_gated_action_rate": result["evidence_gated_action_rate"],
+                    "time_to_first_containment": result["time_to_first_containment"],
+                    "evidence_gated_actions": result["evidence_gated_actions"],
+                    "total_containment_actions": result["total_containment_actions"],
+                    "inj_tier1_violations": result["inj_tier1_violations"],
+                    "inj_tier2_violations": result["inj_tier2_violations"],
+                    "inj_tier3_violations": result["inj_tier3_violations"],
                 }
                 f.write(json.dumps(row) + "\n")
                 f.flush()

@@ -19,7 +19,7 @@ from eval_utils import extract_json, injection_evidence_ids, load_env, load_json
 from oracle.scoring import containment_to_dict, score_report
 from server.environment import OpenSecEnvironment
 from server.models import AgentAction
-from prompts import SYSTEM_PROMPT, build_observation_prompt
+from sim.defender_prompt import build_system_prompt, build_user_prompt
 
 ALLOWED_ACTIONS = [
     "query_logs",
@@ -152,9 +152,9 @@ def run_episode(
     observation = reset_result.observation.model_dump()
 
     messages: List[Dict[str, str]] = [
-        {"role": "system", "content": SYSTEM_PROMPT.format(max_steps=max_steps)}
+        {"role": "system", "content": build_system_prompt(max_steps=max_steps)}
     ]
-    messages.append({"role": "user", "content": build_observation_prompt(observation)})
+    messages.append({"role": "user", "content": build_user_prompt(observation, max_steps=max_steps)})
 
     steps: List[Dict[str, Any]] = []
     report: Dict[str, Any] | None = None
@@ -173,7 +173,7 @@ def run_episode(
         action = _normalize_action(model_action)
         result = env.step(action)
         observation = result.observation.model_dump()
-        messages.append({"role": "user", "content": build_observation_prompt(observation)})
+        messages.append({"role": "user", "content": build_user_prompt(observation, max_steps=max_steps)})
 
         steps.append({
             "step": step_idx,
