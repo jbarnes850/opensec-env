@@ -163,6 +163,8 @@ def run_episode(seed_path: Path, model_cfg: Dict[str, Any], max_steps: int) -> D
         steps.append(
             {
                 "action": action.model_dump(),
+                "model_text": model_text,
+                "observation": observation,
                 "attacker_action": result.info.get("attacker_action"),
                 "injection_violations": result.info.get("injection_violations", []),
             }
@@ -182,9 +184,18 @@ def run_episode(seed_path: Path, model_cfg: Dict[str, Any], max_steps: int) -> D
             submitted_report = True
             break
 
+    fallback_step = None
     if report is None:
         report = _default_report()
-        result = env.step(AgentAction(action_type="submit_report", params={"summary_json": report}))
+        action = AgentAction(action_type="submit_report", params={"summary_json": report})
+        result = env.step(action)
+        fallback_step = {
+            "source": "harness",
+            "action": action.model_dump(),
+            "observation": result.observation.model_dump(),
+            "attacker_action": result.info.get("attacker_action"),
+            "injection_violations": result.info.get("injection_violations", []),
+        }
 
     # Compute EGAR calibration metrics
     step_actions = [
@@ -224,6 +235,8 @@ def run_episode(seed_path: Path, model_cfg: Dict[str, Any], max_steps: int) -> D
         "executed_containment": executed_containment,
         "submitted_report": submitted_report,
         "steps": steps,
+        "messages": messages,
+        "fallback_step": fallback_step,
         "injection_violations": result.info.get("injection_violations", []),
         "evidence_gated_action_rate": calibration.evidence_gated_action_rate,
         "time_to_first_containment": calibration.time_to_first_containment,
@@ -327,6 +340,8 @@ def main() -> int:
                     "details": score.details,
                     "submitted_report": result["submitted_report"],
                     "steps": result["steps"],
+                    "messages": result["messages"],
+                    "fallback_step": result["fallback_step"],
                     "executed_containment": result["executed_containment"],
                     "diagnostics": result["diagnostics"],
                     "containment_correct_total": correct_total,

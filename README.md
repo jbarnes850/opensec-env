@@ -81,6 +81,18 @@ open http://localhost:8080/playground/index.html
 
 Drag any `outputs/*.jsonl` file onto the page, or use the Watch feature for live updates during evaluation runs.
 
+New `scripts/eval.py` traces also retain `messages`, each step's raw `model_text`,
+and its returned `observation`. The transcript is stored once: the input to
+zero-based model step `i` is `messages[:2 + 2 * i]`. The final user message is
+prepared for a possible next model call but is never sent. These are
+the evaluator's messages and returned text, not a complete provider request or
+hidden model reasoning. If the evaluator submits a default report, that action
+and observation appear in `fallback_step` with `source: "harness"`; otherwise
+`fallback_step` is `null`. It is not a model turn and does not change `steps` or
+scoring. These fields do not exist in older trace files.
+They include full prompt and evidence text; review them before sharing traces
+from custom scenarios.
+
 ![Trace Playground](assets/playground-preview.png)
 
 ## Published Baselines
